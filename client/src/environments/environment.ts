@@ -18,7 +18,17 @@ export const environment = {
   apiUrlStubInEnvironment: 'http://0.0.0.0:8089/api/v1/articles/', // << Don't forget final '/' !
 
   // NEW: Basically same stub, for <IMG SRC="" />
-  imgUrlStubInEnvironment: 'http://0.0.0.0:8089/' // << Yep, final '/'
+  /* We will now point to the "canonical" place where the IMAGES are, namely in Production at Digital Ocean!
+   imgUrlStubInEnvironment: 'http://0.0.0.0:8089/' // << Yep, final '/'
+   */
+  /* Even though this is "LOCAL" for app, and local for REST API, we go to PRODUCTION for the IMAGES:
+   */
+  imgUrlStubInEnvironment: 'http://104.236.198.117:8089/'
+
+
+
+
+
 
 
   /* *** -2- ****** 192.168.1.126  ************* */
