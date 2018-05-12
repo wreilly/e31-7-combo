@@ -1,0 +1,27 @@
+<strong>ARTICLE.COMPONENT</strong>
+<h3>
+Article Component
+</h3>
+<h4><a routerLink="/articles/{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h4>
+<!-- https://angular.io/api/router/RouterLink#description
+routerLink vs. [routerLink]
+-->
+<p>Some Times - Article Detail Page: /articles/{{articleHere._id}}</p>
+
+    <!-- To display literal '{{ }}', use this pattern to escape: {{ '{' }}-->
+    <!--/articles/{{ '{' }}{{ '{' }}articleHere._id{{ '}' }}{{ '}' }}-->
+<!--
+<p>Some Times - API URL: <a bind-href="articleApiUrlWithId" target="_apiblank">{{articleApiUrlWithId}}</a>
+</p>
+<p>New York Times - article URL: <a bind-href="articleHere.articleUrl" target="_nytblank">{{articleHere.articleUrl}}</a>
+</p>
+-->
+<button on-click="sendTitleToParent()"
+        (mousedown)="$event.preventDefault()"
+>Click to Emit!</button>
+<!--
+<button on-click="sendTitleToParent()"
+        (mousedown)="preventDefaultOnMouseDownButtonHighlightRemains($event)"
+>Click to Emit!</button>
+-->
+<hr>
