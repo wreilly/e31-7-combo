@@ -225,7 +225,7 @@ var ArticleDetailComponent = /** @class */ (function () {
         */
         // Now as its own export const:
         this.apiUrlStubInThisComponent = __WEBPACK_IMPORTED_MODULE_2__article_service__["b" /* apiUrlStubInService */];
-        this.imgUrlStubInThisComponent = __WEBPACK_IMPORTED_MODULE_2__article_service__["c" /* imgUrlStubInService */];
+        this.imgUrlStubInThisComponent = __WEBPACK_IMPORTED_MODULE_2__article_service__["d" /* imgUrlStubInService */];
         // TAKE 3 w. REACTIVE-MODEL-DRIVEN Form:
         this.myArticleEditFormGroup = new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["b" /* FormGroup */]({
             'articleTitle_formControlName': new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormControl */](null, [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["e" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["e" /* Validators */].minLength(4)])
@@ -1481,7 +1481,9 @@ An Example With 3:
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArticleService; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return apiUrlStubInService; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return imgUrlStubInService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return imgUrlStubInService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return mongodbCollection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return gitRepo; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
@@ -1693,6 +1695,16 @@ var imgUrlStubInService = __WEBPACK_IMPORTED_MODULE_2__environments_environment_
   http://192.168.1.126:8089/
   http://104.236.198.117:8089/
  */
+var mongodbCollection = 'newarticles'; // See MODEL INFO:
+/* From /server/models/articleModel.js : We've renamed from original 'Article' to 'Newarticle'.
+Simply to get a new, different Collection to write to, read from. No other change. Same schema.
+
+ var articleModelVarHere = mongoose.model('Newarticle', articleSchema)
+ */
+var gitRepo = 'e31-7-combo';
+/*
+ https://github.com/wreilly/e31-7-combo
+ */ 
 
 
 /***/ }),
@@ -1807,7 +1819,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/footer/footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"center\">\n  <hr />\n<p>&copy; Some Times Angular CRUD with REST API {{ copyrightYearInFooter }}</p>\n<br />\n<p>CSCI-E31 Final Assignment 7 CODE CLEAN UP Post-Project - May 12..., 2018</p>\n<p>William Reilly - wreilly2001@gmail.com</p>\n</div>\n"
+module.exports = "<div class=\"center\">\n  <hr />\n<p>&copy; Some Times Angular CRUD with REST API {{ copyrightYearInFooter }}</p>\n<br />\n  <p style=\"font-size: xx-small;\">Pointed to API at: {{ apiUrlStubInFooter }}</p>\n  <p style=\"font-size: xx-small;\">Pointed to /public/img at: {{ imgUrlStubInFooter }}</p>\n  <p style=\"font-size: xx-small;\">Pointed to MongoDB Collection: {{ mongodbCollectionInFooter }}</p>\n  <p style=\"font-size: xx-small;\">Pointed to Git Repository: {{ gitRepoInFooter }}</p>\n  <br />\n  <p>CSCI-E31 Final Assignment 7 CODE CLEAN UP Post-Project - May 12 - 13 ..., 2018</p>\n<p>William Reilly - wreilly2001@gmail.com</p>\n</div>\n"
 
 /***/ }),
 
@@ -1817,6 +1829,7 @@ module.exports = "<div class=\"center\">\n  <hr />\n<p>&copy; Some Times Angular
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FooterComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__article_service__ = __webpack_require__("../../../../../src/app/article.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1827,8 +1840,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var FooterComponent = /** @class */ (function () {
     function FooterComponent() {
+        this.apiUrlStubInFooter = __WEBPACK_IMPORTED_MODULE_1__article_service__["b" /* apiUrlStubInService */];
+        this.imgUrlStubInFooter = __WEBPACK_IMPORTED_MODULE_1__article_service__["d" /* imgUrlStubInService */];
+        this.mongodbCollectionInFooter = __WEBPACK_IMPORTED_MODULE_1__article_service__["e" /* mongodbCollection */];
+        this.gitRepoInFooter = __WEBPACK_IMPORTED_MODULE_1__article_service__["c" /* gitRepo */];
     }
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),

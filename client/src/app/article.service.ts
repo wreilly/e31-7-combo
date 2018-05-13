@@ -226,3 +226,15 @@ export const imgUrlStubInService = environment.imgUrlStubInEnvironment;
   http://192.168.1.126:8089/
   http://104.236.198.117:8089/
  */
+
+export const mongodbCollection = 'newarticles'; // See MODEL INFO:
+/* From /server/models/articleModel.js : We've renamed from original 'Article' to 'Newarticle'.
+Simply to get a new, different Collection to write to, read from. No other change. Same schema.
+
+ var articleModelVarHere = mongoose.model('Newarticle', articleSchema)
+ */
+
+export const gitRepo = 'e31-7-combo';
+/*
+ https://github.com/wreilly/e31-7-combo
+ */

@@ -4,9 +4,12 @@
 server/public/img
 
 # compiled output
-# N.B. For Assignment 7 we will Comment Out '/dist', so that it is NOT ignored
-# /client/dist
-# /dist
+# N.B. For "Combo" use when deployed to Production
+# (Digital Ocean) (D.O.), we will *Comment Out* '/dist', 
+# so that it is *NOT* ignored, so that it *IS* included in Git repo.
+# Think "double negative". Cheers
+/client/dist
+/dist
 /dist-server
 /tmp
 /out-tsc

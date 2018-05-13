@@ -1,8 +1,11 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-# N.B. For Assignment 7 we will Comment Out '/dist' so that it is NOT ignored
-# /dist
+# N.B. For "Combo" use when deployed to Production
+# (Digital Ocean) (D.O.), we will *Comment Out* '/dist', 
+# so that it is *NOT* ignored, so that it *IS* included in Git repo.
+# Think "double negative". Cheers
+dist
 /dist-server
 /tmp
 /out-tsc
