@@ -20,8 +20,13 @@ ASSIGNMENT 7
 
 const client_dist_dir_done_right = path.join(__dirname, '..', 'client', 'dist');
 
-app.use('/', express.static(client_dist_dir_done_right))
+/* **********  BREAKING APART THE "COMBO"  ***************
+* Q. Why?
+* A. 1. Takes a little longer to develop the Angular client side: 'ng build' vs. 'ng serve'
+* A. 2. It appears I am losing the console.log() from Angular client code (in Broswer dev console). :o(
 
+app.use('/', express.static(client_dist_dir_done_right))
+*/
 
 
 
@@ -84,17 +89,21 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use('/api/v1/articles', apiArticlesRouterHere)
 
-    /* MUST REMOVE. This Server route path matches what the Angular Client primarily uses.
+    /* MUST REMOVE.
+     (At least,when in "COMBO" mode, yes ? )
+    This Server route path matches what the Angular Client primarily uses.
 app.use('/articles', articlesRouterHere)
     */
 
 
 /* Old "Catch-all"
+* Hmm, going back to Non-Combo mode; reinstating this:
+* */
 app.get('/', (req, res, next) => {
     console.log('just on the root home page.')
     res.render('index')
 })
-*/
+
 
 /*
  Catch-All:
@@ -104,10 +113,12 @@ app.get('/', (req, res, next) => {
  use this catch-all, and redirect to the Angular index.html page.
  - Recall, the Express (proxy server) app only has one route, for the WS API GET :3000/myspecialproxy/:book_id
  - Anything else will fall to this Catch-All:
- */
+
+ GOING BACK TO NON-COMBO MODE:  comment this out now
+
 app.use('/*', (req, res, next) => {
     res.sendFile('index.html', {root: client_dist_dir_done_right})
 })
-
+*/
 
 module.exports = app

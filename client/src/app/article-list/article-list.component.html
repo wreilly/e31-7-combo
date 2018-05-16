@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="column left">
-        <h3>1. Display Articles - from REST API, using Angular Form</h3>
+        <h3>1. Display Articles - from REST API</h3>
         <div style="background-color: lightgreen; padding: 10px;">
             <h4>1.A. Display "First n" Articles</h4>
             <div>
@@ -22,7 +22,7 @@
         <div style="background-color: lightblue; padding: 10px;">
             <h4>1.B. Display All Articles</h4>
             <button (click)="getAllArticlesOnClick()"
-                    (mousedown)="preventDefaultOnMouseDownButtonHighlightRemains($event)">Get All Articles</button>
+                    (mousedown)="$event.preventDefault()">Get All Articles</button>
             <br />
             <br />
             <button (click)="clearAllArticlesOnClick()" style="font-style: italic;"
@@ -45,7 +45,7 @@
                        formControlName="articlePhotos_formControlName"
                        on-change="onPhotosFileChangePostFiles($event)"
                        multiple>
-                <button type="submit">Add Article</button>
+                <button type="submit">Add Article via Reactive/Model-Driven Form</button>
             </form>
         </div>
         <hr />
@@ -57,15 +57,15 @@
         </div>
         <hr />
         <p>2.B. Angular TEMPLATE-DRIVEN FORM</p>
-        <p><strong>Unfortunately</strong>, I had a basic working "Template-Driven" Angular Form, but as I worked (a ton) to get Photo Upload to work on the "Reactive-Model-Driven" Form, something has happened to render this one not working. Ran out of time to rectify.</p>
+        <p>We are trying to FIX-IT! 22  --  <strong>Unfortunately</strong>, I had a basic working "Template-Driven" Angular Form, but as I worked (a ton) to get Photo Upload to work on the "Reactive-Model-Driven" Form, something has happened to render this one not working. Ran out of time to rectify.</p>
         <p>I've "disabled" the form's fields and button.</p>
         <div style="border-color: blue; border-style: dashed; padding: 10px;">
             <form ref-addArticleFormTemplate_ref="ngForm" on-ngSubmit="addArticle(addArticleFormTemplate_ref.value)">
                 <label for="articleUrl_id_template">NYT URL: </label>
-                <input type="text" id="articleUrl_id_template" name="articleUrl_name" size="40" ngModel disabled/>
+                <input type="text" id="articleUrl_id_template" name="articleUrl_name_template" size="40" ngModel />
                 <br />
                 <label for="articleTitle_id_template">Headline: </label>
-                <input type="text" id="articleTitle_id_template" name="articleTitle_name" size="40" ngModel disabled/>
+                <input type="text" id="articleTitle_id_template" name="articleTitle_name_template" size="40" ngModel />
                 <br />
 <!--
                 <label for="articlePhotos_id_template">Photo(s): </label>
@@ -76,7 +76,7 @@
                        multiple
                 disabled>
 -->
-                <button type="submit" disabled>Add Article</button>
+                <button type="submit">Add Article via Template-Driven Form</button>
             </form>
         </div>
         <hr />
