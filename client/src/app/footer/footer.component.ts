@@ -13,6 +13,7 @@ export class FooterComponent {
   imgUrlStubInFooter = imgUrlStubInService;
   mongodbCollectionInFooter = mongodbCollection;
   gitRepoInFooter = gitRepo;
+  @Input() angularVersionInFooter;
   @Input() copyrightYearInFooter;
 
   constructor() { }

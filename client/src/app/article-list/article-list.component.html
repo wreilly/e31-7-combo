@@ -1,6 +1,4 @@
 <strong>ARTICLE-LIST.COMPONENT</strong>
-<p style="font-size: small;">Angular Version: {{ angularVersion.full }}</p>
-<p style="font-size: small;">Pointed to API at: {{ apiUrlStubInApp }}</p>
 <div class="row" style="border-style: dashed; border-color: darkred">
     <div>You clicked:</div>
     <div style="font-size: x-large">{{titleToDisplay}}</div>
@@ -55,7 +53,6 @@
             <h4>Article You Just Added</h4>
             <app-article
                     [articleToSendDown]="articleIJustCreatedDisplay"
-                    [apiUrlStubInArticleAlias]="apiUrlStubInApp"
                     on-myEventEmitterSendTitleAlias="runDisplayTitle($event)"></app-article>
         </div>
         <hr />
@@ -91,7 +88,6 @@
         <app-article
                 *ngFor='let article of articlesHowMany'
                 [articleToSendDown]="article"
-                [apiUrlStubInArticleAlias]="apiUrlStubInApp"
                 on-myEventEmitterSendTitleAlias="runDisplayTitle($event)"></app-article>
     </div>
     <div class="column right">
@@ -101,7 +97,6 @@
         <app-article
                 *ngFor='let article of articles'
                 [articleToSendDown]="article"
-                [apiUrlStubInArticleAlias]="apiUrlStubInApp"
                 on-myEventEmitterSendTitleAlias="runDisplayTitle($event)"></app-article>
     </div>
 </div>

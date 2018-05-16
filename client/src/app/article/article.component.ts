@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { apiUrlStubInService } from '../article.service';
 
 @Component({
   selector: 'app-article',
@@ -10,9 +11,8 @@ export class ArticleComponent implements OnInit {
 
   @Input('articleToSendDown') articleHere;
 
-  @Input('apiUrlStubInArticleAlias') apiUrlStubInArticle;
+  apiUrlStubInArticle = apiUrlStubInService;
   // i.e., http://0.0.0.0:8089/api/v1/articles/
-  // or    http://104.236.198.117:8089/api/v1/articles/
 
   @Output('myEventEmitterSendTitleAlias') myEventEmitterSendTitle = new EventEmitter();
 
@@ -28,15 +28,7 @@ export class ArticleComponent implements OnInit {
   }
 
   sendTitleToParent() {
-    console.log('sendTitleToParent hey? this.articleHere.articleTitle: ', this.articleHere.articleTitle);
     this.myEventEmitterSendTitle.emit(this.articleHere.articleTitle);
-  }
-
-  preventDefaultOnMouseDownButtonHighlightRemains(event) {
-    event.preventDefault(); // We prevent the button highlight (in Chrome)
-    /* UPDATE
-    Just do it IN-LINE in the Component HTML. Heck.
-     */
   }
 
 }

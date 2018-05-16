@@ -1,6 +1,6 @@
-import { Component, OnInit, VERSION } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ArticleService, apiUrlStubInService } from '../article.service';
+import { ArticleService } from '../article.service';
 
 // For file upload stuff we'll first try the HTTP POST from right here in the Component; later to the Service. t.b.d.
 import { HttpClient } from '@angular/common/http'
@@ -13,13 +13,10 @@ import { HttpClient } from '@angular/common/http'
     providers: [ArticleService, HttpClient]
 })
 export class ArticleListComponent {
-    angularVersion = VERSION
 
-    copyrightYear = '2018';
     articles = [];
     howMany = 0; // # of Articles to get. user input, click
     articlesHowMany = []; // Articles user requested, via button click
-    apiUrlStubInApp = ''; // init, create a Property
     titleToDisplay: string;
 
     /* ====================================== */
@@ -48,12 +45,6 @@ export class ArticleListComponent {
     ) { }
 
     ngOnInit() {
-
-/* WORKED. When apiUrlStub etc. was INSIDE the exported class:
-        this.apiUrlStubInApp = this._myArticleService.apiUrlStubInService;
-*/
-// Now (for heck of it and/or learning), trying to import and use as mere const:
-        this.apiUrlStubInApp = apiUrlStubInService
 
         // this.getAllArticles();
         this._myArticleService.listArticles().subscribe(
@@ -234,7 +225,7 @@ export class ArticleListComponent {
 
          ------WebKitFormBoundarygyHHLUu614ikUvU3--
          */
-// apiUrlstub:  http://0.0.0.0:8089/api/v1/articles/
+
 /*
         this._myArticleService.createArticle(myFormDataFilesForService)
 */
