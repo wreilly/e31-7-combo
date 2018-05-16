@@ -23,8 +23,10 @@
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
+      "my-fake-comment-in-json": "https://medium.com/@natchiketa/angular-cli-and-os-environment-variables-4cfa3b849659",
       "environments": {
         "dev": "environments/environment.ts",
+        "kitchen": "environments/environment.kitchen.ts",
         "prod": "environments/environment.prod.ts"
       }
     }

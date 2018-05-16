@@ -33,6 +33,9 @@ export const environment = {
 
 
   /* *** -2- ****** 192.168.1.126  ************* */
+
+  // UPDATE: This section is now in ENVIRONMENT.KITCHEN.TS
+
   // SUBNET "LOCAL" 192.168.1.126 << sometimes changes to .125
   //   $ ifconfig | grep 192
   //   inet 192.168.1.126 netmask 0xffffff00 broadcast 192.168.1.255
