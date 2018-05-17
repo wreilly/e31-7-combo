@@ -14,15 +14,15 @@ export const environment = {
   // USE ANYWHERE ... (E.g., on Harvard campus, in some coffee shop, etc.)
   // Also yes CAN be used "at home" simply.
   // Runs on local machine only.
-/*
+/* */
   apiUrlStubInEnvironment: 'http://0.0.0.0:8089/api/v1/articles/', // << Don't forget final '/' !
-*/
+
   // NEW: Basically same stub, for <IMG SRC="" />
   /* We will now point to the "canonical" place where the IMAGES are, namely in Production at Digital Ocean! */
   // OR - let's put (new) photos LOCAL, to work that way during development:
-  /*
+  /* */
    imgUrlStubInEnvironment: 'http://0.0.0.0:8089/' // << Yep, final '/'
-*/
+
   /* Even though this is "LOCAL" for app, and local for REST API, we go to PRODUCTION for the IMAGES:
 
   imgUrlStubInEnvironment: 'http://104.236.198.117:8089/'
@@ -44,14 +44,14 @@ export const environment = {
   // USE AT HOME (100 Gore) (if/when you wish to use another computer to see app in browser)
   // Do NOT use outside the home, off of the SubNet. App may run but API part won't work!
   // See Also note below re: PACKAGE.JSON
-/* */
+/*
   apiUrlStubInEnvironment: 'http://192.168.1.125:8089/api/v1/articles/', // << Don't forget final '/' !
-
+*/
 
 /*
-  // NEW: Basically same stub, for <IMG SRC="" /> */
+  // NEW: Basically same stub, for <IMG SRC="" />
   imgUrlStubInEnvironment: 'http://192.168.1.125:8089/' // << Yep, final '/'
-
+*/
 
 
 
