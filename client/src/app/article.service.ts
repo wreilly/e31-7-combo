@@ -95,16 +95,9 @@ in earnest, to run all these HTTP calls to the API!
   }
 
 
-    createArticle(myFormFieldsAndFiles) {  // UPDATE: << This is now FormData, not just a plain object with form fields for an Article
-      /*
-       createArticle(articleToCreatePassedIn) {
-       */
+    createArticle(myFormFieldsAndFiles) {  // << This is FormData, not just a plain object with form fields for an Article
 
-/*
-      console.log('HERE IN THE SOIVICE articleToCreatePassedIn is ', articleToCreatePassedIn) // Yes we have the pics
-*/
-      console.log('HERE IN THE SOIVICE myFormFieldsAndFiles is ', myFormFieldsAndFiles) // you won't see this FormData here....
-
+      console.log('HERE IN THE SOIVICE myFormFieldsAndFiles is ', myFormFieldsAndFiles) // you won't see this FormData here via console.log() .... Need xhr to "debug":
 
       var myxhr4 = new XMLHttpRequest;
       myxhr4.open('POST', '/myFormFieldsAndFilesInService', true);
@@ -129,12 +122,6 @@ in earnest, to run all these HTTP calls to the API!
        ------WebKitFormBoundaryq80IEBooD6GEetmo--
        */
 
-
-      /*
-      return this._serviceHttp.post(apiUrlStubInService,
-          articleToCreatePassedIn
-      );
-      */
 /* This IS has been the standard POST '/' endpoint for this service method... */
       return this._serviceHttp.post(apiUrlStubInService,
          myFormFieldsAndFiles

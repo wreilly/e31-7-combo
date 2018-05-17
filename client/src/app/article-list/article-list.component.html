@@ -57,25 +57,23 @@
         </div>
         <hr />
         <p>2.B. Angular TEMPLATE-DRIVEN FORM</p>
-        <p>We are trying to FIX-IT! 22  --  <strong>Unfortunately</strong>, I had a basic working "Template-Driven" Angular Form, but as I worked (a ton) to get Photo Upload to work on the "Reactive-Model-Driven" Form, something has happened to render this one not working. Ran out of time to rectify.</p>
-        <p>I've "disabled" the form's fields and button.</p>
+        <p>We are trying to FIX-IT! 2233</p>
         <div style="border-color: blue; border-style: dashed; padding: 10px;">
-            <form ref-addArticleFormTemplate_ref="ngForm" on-ngSubmit="addArticle(addArticleFormTemplate_ref.value)">
+            <form ref-addArticleFormTemplate_ref="ngForm" on-ngSubmit="addArticle(addArticleFormTemplate_ref)">
                 <label for="articleUrl_id_template">NYT URL: </label>
                 <input type="text" id="articleUrl_id_template" name="articleUrl_name_template" size="40" ngModel />
                 <br />
                 <label for="articleTitle_id_template">Headline: </label>
                 <input type="text" id="articleTitle_id_template" name="articleTitle_name_template" size="40" ngModel />
                 <br />
-<!--
+
                 <label for="articlePhotos_id_template">Photo(s): </label>
                 <input type="file"
                        id="articlePhotos_id_template"
                        name="articlePhotos_name"
-                       on-change="onPhotosFileChange($event)"
+                       on-change="onPhotosFileChangePostFiles($event)"
                        multiple
-                disabled>
--->
+                >
                 <button type="submit">Add Article via Template-Driven Form</button>
             </form>
         </div>
