@@ -31,6 +31,7 @@ export class ArticleListComponent {
     myFormFieldsData = new FormData(); // used by both TEMPLATE and REACTIVE forms "prepareToAdd...()"
 
     addArticleForm: FormGroup; // REACTIVE Form (not Template Form)
+
     loadingPhotos = false; // https://nehalist.io/uploading-files-in-angular2/
     /* ====================================== */
     /* ====================================== */
@@ -206,10 +207,22 @@ export class ArticleListComponent {
 
         console.log('-01B- this.addArticleForm ', this.addArticleForm); // FormGroup
         console.log('-01B-A- this.addArticleForm.controls ', this.addArticleForm.controls);
+/* Hmm. Was showing RED ...
         console.log('-01B-B- this.addArticleForm.controls.articleTitle_formControlName.value ', this.addArticleForm.controls.articleTitle_formControlName.value); // Yes what's in input box
+*/
+        console.log('-01B-Baaa- this.addArticleForm.controls[\'articleTitle_formControlName\'].value ', this.addArticleForm.controls['articleTitle_formControlName'].value); // Yes what's in input box
 
         // (1) .controls.field << YEP, syntax WORKS.
+        /* Interesting.
+        This syntax works, but, the IDE/Typescript shows RED for 'articleTitle_formControlName'
+        Typescript does not know what a FormGroup.controls (in our case: 'addArticleForm.controls') is allowed to have on it.
+        Hmm.
+        Whereas syntax # 2 below avoids the IDE/Typescript RED (shows it in nice GREEN instead).
+         */
+/* Hmm. Was showing RED ...
         this.myFormFieldsData.append('articleUrl_name', this.addArticleForm.controls.articleUrl_formControlName.value)
+*/
+        this.myFormFieldsData.append('articleUrl_name', this.addArticleForm.controls['articleUrl_formControlName'].value)
 
         // (2) .controls['field'] << YEP, syntax WORKS.
         this.myFormFieldsData.append('articleTitle_name', this.addArticleForm.controls['articleTitle_formControlName'].value)

@@ -53,7 +53,7 @@ https://blog.thoughtram.io/angular/2016/03/21/template-driven-forms-in-angular-2
         -->
         <p>Angular TEMPLATE-DRIVEN FORM</p>
         <div style="border-color: blue; border-style: dashed; padding: 10px;">
-        <form ref-myArticleEditForm_ref="ngForm" on-ngSubmit="letUsSave(myArticleEditForm_ref.value)">
+        <form ref-myArticleEditForm_ref="ngForm" on-ngSubmit="letUsSaveTemplate(myArticleEditForm_ref.value)">
             <p>Edit the Headline: <input
                     type="text"
                     ref-articleTitle_ref
@@ -75,7 +75,19 @@ https://blog.thoughtram.io/angular/2016/03/21/template-driven-forms-in-angular-2
         <hr />
         <p>Angular REACTIVE-MODEL-DRIVEN FORM</p>
         <div style="border-color: green; border-style: dotted; padding: 10px;">
+            <form [formGroup]="myArticleEditFormGroup" on-ngSubmit="letUsSaveReactiveNoParam()">
+<!--
             <form [formGroup]="myArticleEditFormGroup" on-ngSubmit="letUsSaveReactive(myArticleEditFormGroup)">
+
+        /* NOTE:
+First attempt was this "letUsSaveReactive(PARAM)"
+I copied this method and called new one "letUsSaveReactiveNoParam()"
+
+We'll use the "NoParam()". (What the heck).
+So, THIS METHOD "letUsSaveReactive" is NO LONGER BEING USED. Cheers.
+ */
+
+-->
                 <p>Edit the Headline:
                 <input
                         type="text"
@@ -88,7 +100,11 @@ https://blog.thoughtram.io/angular/2016/03/21/template-driven-forms-in-angular-2
                 >
                 </p>
       <!-- Yes, works:  [(ngModel)]="theArticleHereInDetailPage.articleTitle" -->
-                <br />
+                <p>New York Times - article URL: {{theArticleHereInDetailPage.articleUrl}}
+                </p>
+                <p>Some Times - API URL: {{articleApiUrlWithId}}</p>
+                <p class="tiny">{{theArticleHereInDetailPage._id}}</p>
+
                 <button type="submit">Let's Save!</button>
             </form>
 

@@ -13,7 +13,7 @@ export class Wrarticle {
     // the constructor.
     // A. Nope. Seems no, absolutely not.
     // That shortcut is avail. in JavaScript, kids, but not
-    // here in good old strict old I'll repeat good old TYPESCRIPT.
+    // in good old TYPESCRIPT.
     // Okay.
        articleTitle_name: string;
 
