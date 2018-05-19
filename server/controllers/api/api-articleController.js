@@ -77,13 +77,13 @@ apiArticleController.apiGetFirstNArticles = function(req, res, next) {
 
     var howManyToGet = req.query.howMany_query
     // For Assignment 5 (Express, no Angular): On article.pug form, hidden input field
-    // For Assignment 6 (Angular): On app.component.html, button on-click ... (t.b.d. ?)
+    // For Assignment 6 (Angular): On app.component.html, button on-click
 
     articleDataServiceHereInApiController.findFirstNArticles(howManyToGet)
         .then(
             (whatIGot) => {
                 // resolved
-                console.log('First N - First N ? whatIGot ', whatIGot) // Boo. It is ALL 17, not first 2.
+                console.log('First N - First N ? whatIGot ', whatIGot)
                 res.send(whatIGot) // "first n articles ..."
             },
             (problemo) => {
@@ -199,19 +199,59 @@ apiArticleController.apiUploadedArticleImagesNowDoNothing = function(req, res, n
     // Hmm. The router call did the Multer work with the images already
     // Nothing to do here in the Controller as I understand it.
 
-    console.log('REST API CONTROLLER apiUploadedArticleImagesNowDoNothing req.files ? has what? ', req.files)
+    console.log('REST API CONTROLLER apiUploadedArticleImagesNowDoNothing req.files: ', req.files)
     console.log('REST API CONTROLLER apiUploadedArticleImagesNowDoNothing req.files[0].path ', req.files[0].path)
 
     // We'll just fire next() ? Is that moral equivalent of a return, or a res.send etc. ?? we shall see.
-    console.log('apiUploadedArticleImagesNowDoNothing ... "next()" ? << NO  return ?? << NO res.send << OK ')
-    // next(); // No
-    // return; // No
-    res.send({ "crazymessage": "RES.SEND in JSON, Congratulations, your file was uploaded. At least we think it was. c/o apiUploadedArticleImagesNowDoNothing","yourpathonefile": req.files[0].path, "allreqfiles": req.files })
+    console.log('apiUploadedArticleImagesNowDoNothing ... res.send << OK ')
+    res.send({ "crazymessage": "RES.SEND in JSON, Congratulations, your file(s) was/were uploaded.","yourpathonefile": req.files[0].path, "allreqfiles": req.files })
 
     /* Hooray for our side
-     {crazymessage: "RES.SEND in JSON, Congratulations, your file was u… it was. c/o apiUploadedArticleImagesNowDoNothing", yourpath: "public/img/sometimes__1525951820700_010006-MexAmerican.jpg"}
-     */
+    We here get back all we need re: FILES.
+    - An Array. For each File we get a) original filename, b) renamed filename, c) etc. Bon.
 
+     allreqfiles
+     :
+     Array(2)
+     0
+     :
+     destination
+     :
+     "public/img"
+     encoding
+     :
+     "7bit"
+     fieldname
+     :
+     "file"
+     filename
+     :
+     "sometimes__1526723788740_15Mideast-Visual1-superJumbo-v3.jpg"
+     mimetype
+     :
+     "image/jpeg"
+     originalname
+     :
+     "15Mideast-Visual1-superJumbo-v3.jpg"
+     path
+     :
+     "public/img/sometimes__1526723788740_15Mideast-Visual1-superJumbo-v3.jpg"
+     size
+     :
+     288248
+
+     length
+     :
+     2
+     __proto__
+     :
+     Array(0)
+     crazymessage
+     :
+     "RES.SEND in JSON, Congratulations, your file(s) was/were uploaded."
+     yourpathonefile ... etc.
+     :
+     */
 }
 
 
@@ -220,47 +260,66 @@ apiArticleController.apiUploadedArticleImagesNowDoNothing = function(req, res, n
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 apiArticleController.apiCreateArticle = function(req, res, next) {
 
-    /* Note on using CURL:
-     $ curl --data "articleUrl_name=http://nytimes.com/curl234&articleTitle_name=Our Curled Headline With Spaces AND MORE_name" http://0.0.0.0:8089/api/v1/articles/
-
-     {"_id":"5aca109b01c8184ec530f4be","articleUrl":"http://nytimes.com/curl234","articleTitle":"Our Curled Headline With Spaces AND MORE_name","__v":0}
-     */
-
     var articleToSave = {}
     articleToSave.articleUrl = req.body.articleUrl_name
     articleToSave.articleTitle = req.body.articleTitle_name
     articleToSave.articlePhotos = req.body.articlePhotos_name
 
-    // MULTER-TIME *****
-    // Hmm. TODO This is not right yet...
-
-    console.log('MULTER ARE YOU THERE? ... Controller ')
-   // console.log('req.body.articlePhotos: ', req.body.articlePhotos) // undefined
-    console.log('req.body.articlePhotos_name: ', req.body.articlePhotos_name) // C:\fakepath\010006-MexAmerican.jpg // undefined too << WAS
-    console.log('req.files: ', req.files) // [] empty :o(
-    // undefined also << WAS
-/* No. (I think.)
-The Multer file business is up on the Angular client.
-Not down here on the Express REST API.
- The Express REST API only has to deal with the filenames, the metadata, to be stored in the MongoDB database.
- The files themselves should get handled/uploaded by Angular and stored in some directory /public/img
- Hmm. U sure about that? Hmm. Time for a Re-Think. (O damn that hurts.)
-
- Nope:
-   articleToSave.articlePhotos = req.files; // whamma-jamma? y not // req.body.articlePhotos_name
-*/
-    console.log('SERVER. Controller. articleToSave: ', articleToSave)
-    /*
-     { articleUrl: 'http://nytimes.com',
-     articleTitle: 'gt',
-     articlePhotos: 'C:\\fakepath\\010006-MexAmerican.jpg' }
+    console.log('req.body.articlePhotos_name: ', req.body.articlePhotos_name);
+    /* 20180519-0636 Array of renamed filenames:
+     ["sometimes__1526724579866_15Mideast-Visual1-superJumbo-v3.jpg","sometimes__1526724579872_051218krugman1-jumbo.png"]
      */
+    console.log('req.files: ', req.files) // [] empty. okay.
 
+    console.log('SERVER. Controller. articleToSave: ', articleToSave)
+    /* 20180519-0627
+    Good. What we need, expect: Form field information only. No "files" per se. Okay.
+
+     ------WebKitFormBoundaryxqXAkvb69BQla2a7
+     Content-Disposition: form-data; name="articleUrl_name"
+
+     https://www.nytimes.com/section/us?action=click&pgtype=Homepage&region=TopBar&module=HPMiniNav&contentCollection=U.S.&WT.nav=page
+     ------WebKitFormBoundaryxqXAkvb69BQla2a7
+     Content-Disposition: form-data; name="articleTitle_name"
+
+     React pics number 3
+     ------WebKitFormBoundaryxqXAkvb69BQla2a7
+     Content-Disposition: form-data; name="articlePhotos_name"
+
+     ["sometimes__1526724579866_15Mideast-Visual1-superJumbo-v3.jpg","sometimes__1526724579872_051218krugman1-jumbo.png"]
+     ------WebKitFormBoundaryxqXAkvb69BQla2a7--
+     */
 
     articleDataServiceHereInApiController.saveArticle(articleToSave)
         .then(
             (whatIGot) => {
                 console.log('Article Saved! ', whatIGot)
+                /* Back from MongoDB
+                 Notes on the "articlePhotos" property:
+                 We used JSON.stringify() to store the Array of Strings with renamed photo filename(s).
+                 (Why JSON.stringify()?
+                 Because (according to Google/S.O.) it was pretty much the only way
+                 to get processing a FormData FileList of Files (which is not really an Array)
+                 to get into a real Array, albeit a real Array that holds one string.
+                 One "JSON.stringified()" String.
+                 That String is in fact itself a stringified version of an Array of Strings.
+                 That is what then goes to the database. (MBU)
+                 Cheers.
+
+                 Therefore in the database we have:
+                 - an Array, that holds one String (in single quotes).
+                 - And that String contains a (sort-of, textually rendered) "Array"
+                 - which holds Strings (double-quoted)
+                 - of renamed photo filenames
+                 So we must use JSON.parse() wherever we eventually consume this data. Cheers encore.
+
+                 { articlePhotos:
+                 [ '["sometimes__1526724579866_15Mideast-Visual1-superJumbo-v3.jpg","sometimes__1526724579872_051218krugman1-jumbo.png"]' ],
+                 _id: 5afffaadbe8eecd714bdcf0a,
+                 articleUrl: 'https://www.nytimes.com/section/us',
+                 articleTitle: 'React pics number 3',
+                 __v: 0 }
+                 */
                 res.send(whatIGot)
             },
             (problemo) => {

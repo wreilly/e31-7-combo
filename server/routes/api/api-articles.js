@@ -2,15 +2,15 @@ var express = require('express')
 var apiArticlesRouter = express.Router()
 
 var middlewareTrimHere = require('../../middleware/trim-url-is-all')
-/* ################################################################## */
-/*
-var middlewareMulterHere = require('../../middleware/my-multer')
+
+/* NOT USING. Refactored that code back here into the Router itself.
+ var middlewareMulterHere = require('../../middleware/my-multer')
 */
-/* ################################################################## */
 
 var apiArticleControllerHereInApi = require('../../controllers/api/api-articleController')
 
-// CORS. Middleware to run on every request to this (API) Router:
+// CORS-enable our server.
+// Middleware to run on every request to this (API) Router:
 apiArticlesRouter.use((req, res, next) => {
     res.set({
         'Access-Control-Allow-Origin': '*',
@@ -84,6 +84,7 @@ apiArticlesRouter.get('/edit', function(req, res, next) {
 })
 
 
+
 /* ******* !! Also put this more SPECIFIC Route FIRST (ahead of GET /:idHere) !! **** */
 
 /* ************************************************** */
@@ -106,10 +107,9 @@ apiArticlesRouter.get('/first-n', function(req, res, next) {
             O well.
 
      */
-    console.log('Do we get what we hoped for? req.query.howMany_query: ', req.query.howMany_query) // undefined
-    // Better! Do we get what we hoped for? req.query.howMany_query:  4
+    console.log('Do we get what we hoped for? req.query.howMany_query: ', req.query.howMany_query);
+    // Yes. Do we get what we hoped for? req.query.howMany_query:  4
     apiArticleControllerHereInApi.apiGetFirstNArticles(req, res, next)
-
 })
 
 
@@ -138,16 +138,27 @@ apiArticlesRouter.get('/', function(req, res, next) {
 /* ###############  BRING MULTER BACK IN TO ROUTER, SIMPLY ########## */
 /* ################################################################## */
 /*
- Re: POST '/api/v1/articles/articleimages' (below?) << Triggered by "Choose Files"
+ Re: POST '/api/v1/articles/articleimages' (below) << Triggered by "Choose Files"
 
- Goal is to simplify, no longer import a module, etc.
+ Goal is to simplify, no longer import my own refactored module for Multer, etc.
+
+ That is, my first instinct was to factor out the Multer setup to its own middleware file.
+
+ Why? Because I'd had success doing just that with the far simpler middleware for "trimURL".
+
+ So, owing to the decision to factor Multer out, to use it here I would then of course need to import that Multer middleware back in, right here.
+ But (this is the point, the problem): I was failing to get that import to work, right here in this context.
+
+ So to fix the problem, I am no longer "factoring out" Multer.
+ I am doing all Multer setup right here, in this same api-articles.js file.
  That way my POST line here in the router can just directly invoke the Multer
- object. I wonder will that help. Ye gods.
- That is:
- IS NOW:        middlewareMulterHere.myMultify,
- SHOULD BECOME: myPhotosUploadMulter.array('file', 3)
+ object.
 
- cf. usage in older simpler project:
+ That is:
+ IS NOW:        middlewareMulterHere.myMultify,  ("FACTORED OUT")
+ SHOULD BECOME: myPhotosUploadMulter.array('file', 3) ("FACTORED BACK IN", "NOT FACTORED OUT")
+
+ cf. a "not factored out" usage in older simpler project:
  /Users/william.reilly/dev/JavaScript/CSCI-E31/07-Week-POST/wr-02-nytimes
  The multer object is right here in the Route POST / line:
  articlesRouter.post('/postarticlesmulter', myUpload.array('articlePhotoFiles_nameM'), (req, res, next) => {
@@ -188,14 +199,6 @@ function myFileFilterFunction(req, file, callback) {
     // TODO filter on .JPG, .PNG etc. T.B.D.
     callback(null, true) // Just accept anything, for now
 }
-
-
-// Sorry. Max of 3 photos per Article
-/* myPhotosUploadMulter.array('file', 3) */
-/*
- myPhotosUploadMulter.array('articlePhotos_name', 3)
- */
-
 /* ################################################################## */
 /* ###############  /BRING MULTER BACK IN TO ROUTER, SIMPLY ########## */
 /* ################################################################## */
@@ -214,6 +217,32 @@ apiArticlesRouter.post(
 
 // NEW: 20180510-0639. Do note: Multer setup code must be ABOVE this line! o la.
     myPhotosUploadMulter.array('file', 3),
+    // Sorry. Max of 3 photos per Article
+
+    /* 20180519-0616  FILES UPLOADED BY MULTER
+    This is what we see in Browser, DevTools, Network, Headers:
+     Request URL: http://0.0.0.0:8089/api/v1/articles/articleimages
+     Request Method: POST
+
+     Request Payload:
+     ------WebKitFormBoundaryNOb82BWtZdAp3zl1
+     Content-Disposition: form-data; name="file"; filename="15Mideast-Visual1-superJumbo-v3.jpg"
+     Content-Type: image/jpeg
+
+
+     ------WebKitFormBoundaryNOb82BWtZdAp3zl1
+     Content-Disposition: form-data; name="file"; filename="051218krugman1-jumbo.png"
+     Content-Type: image/png
+
+
+     ------WebKitFormBoundaryNOb82BWtZdAp3zl1--
+     articleimages
+     */
+
+
+
+
+
     function(req, res, next) {
 /*  NO LONGER LOG this VERY VERY VERY Long thing (req)
         console.log('REST API ROUTER POST /articleimages req ? has what? ', req) //
@@ -274,12 +303,11 @@ apiArticlesRouter.post(
          0
          */
 
-        console.log('REST API ROUTER POST /articleimages req.files ? has what? ', req.files) // undefined << Not any more! :o)
+        console.log('REST API ROUTER POST /articleimages req.files ', req.files);
         /*
-        OMG IT WORKED. YE GODS DAVVERO.
+        IT WORKED.
 
-
-         REST API ROUTER POST /articleimages req.files ? has what?
+         REST API ROUTER POST /articleimages req.files
          [{…}]
          0
          :
@@ -315,63 +343,54 @@ AND, LOOKEE HERE:
 A PICTURE! How nice.
          */
 
-        console.log('REST API ROUTER POST /articleimages req.body ? has what? ', req.body) // empty {}
+        console.log('REST API ROUTER POST /articleimages req.body ', req.body) // empty {}
         apiArticleControllerHereInApi.apiUploadedArticleImagesNowDoNothing(req, res, next)
     }
 )
-/*  MULTER-TIME *****
- We are now (trying to) use a Middleware here to do MULTER stuff
- on the uploaded photo(s)...
- */
 
 /* ************************************************** */
 /* ******** POST '/api/v1/articles/'  ************ */
 /* ************************************************** */
 apiArticlesRouter.post(
     '/',
-    // NEW 20180510-0801 whoa.
-    // Hmm. We used Multer on previous step (/articleimages ).
-    // That worked. We have the file(s) now at /public/img
-    // We have no need to run Multer again here. Commenting out.
-    /*
-    Hmm. With it Commented out, wasn't getting nothing:
-     REST API ROUTER POST / req.files ? has what?  undefined
-     REST API ROUTER POST / req.body ? has what?  {}
+    // We used Multer on previous step (POST /articleimages ).
+    // We have the file(s) now at /public/img
+
+    /* 20180519-0645
+    Beginning to get the picture. (Finalment!) Oy.
+
+    We *do* need this 2nd running of Multer here. But it ain't doing files for us, not this time.
+    Read on.
+
+     https://www.npmjs.com/package/multer#usage
+     "In case you need to handle a text-only multipart form, you can use any of the multer methods (.single(), .array(), fields()). ..."
+
+    1) "CHOOSE FILES" BUTTON-CLICK: FILES = YES, BODY = NO.
+    We used MULTER first on the "Choose Files" button click.
+    That Multer use actually handles real files, writes them to disk.
+    But no 'body', no form fields.
+
+    2) "SUBMIT FORM" BUTTON-CLICK: FILES = NO, BODY = YES.
+    We *again* use MULTER here, on the "Submit" button click.
+    This Multer (for whatever reason) ignores and/or has no access to real files,
+    from that (Angular) form submission.
+    Instead, this 2nd running of Multer processes all the form field data for you.
+    Including the metadata text/string content of the array of photo file names (file names, not files).
      */
-    // Not so fast, keemosabbie.
-    myPhotosUploadMulter.array('file', 3),
+
+    myPhotosUploadMulter.array(), // Yes. Works fine.
+
     /*
-    That's better!  (NOT Commented Out)
-     REST API ROUTER POST / req.files ? has what?  []
-     REST API ROUTER POST / req.body ? has what?  { articleUrl_name: 'http://nytimes.com',
-     articleTitle_name: 'gtyhnn',
-     articlePhotos_name: 'C:\\fakepath\\010006-MexAmerican.jpg',
-     file: 'C:\\fakepath\\010006-MexAmerican.jpg' }
+     We here use a Middleware, to simply trim the NYTimes URL
      */
-/*    middlewareMulterHere.myMultify, // << Did NOT work to factor Multer out to another module/file/thing. No. */
-    // TEMPORARY CUT IT OUT . I don't know why not working. Was in past. Sheesh.
     middlewareTrimHere.myMiddlewareTrimUrl,
     function(req, res, next) {
-        console.log('REST API ROUTER POST / req.files ? has what? ', req.files) // []  empty :o(
-        console.log('REST API ROUTER POST / req.body ? has what? ', req.body)
-        /*
-         { articleUrl_name: 'http://nytimes.com',
-         articleTitle_name: 'gt',
-         articlePhotos_name: 'C:\\fakepath\\010006-MexAmerican.jpg',
-         file: 'C:\\fakepath\\010006-MexAmerican.jpg' }
-         */
+        console.log('REST API ROUTER POST / req.files: ', req.files) // []  empty. Okay.
+        console.log('REST API ROUTER POST / req.body: ', req.body)
 
         apiArticleControllerHereInApi.apiCreateArticle(req, res, next)
     }
-    )
-/*  MULTER-TIME *****
-We are now (trying to) use a Middleware here to do MULTER stuff
-on the uploaded photo(s)...
- */
- /*
-     We here use a Middleware, to simply trim the URL
- */
-
+)
 
 
 

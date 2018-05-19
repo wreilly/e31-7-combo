@@ -2,20 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ArticleService } from '../article.service';
 
-// For file upload stuff we'll first try the HTTP POST from right here in the Component; later to the Service. t.b.d.
-import { HttpClient } from '@angular/common/http'
-
-
 @Component({
     selector: 'app-article-list',
     templateUrl: 'article-list.component.html',
     styleUrls: ['article-list.component.css'],
-    providers: [ArticleService, HttpClient]
+    providers: [ArticleService]
 })
 export class ArticleListComponent {
 
     articles = [];
-    howMany = 0; // # of Articles to get. user input, click
     articlesHowMany = []; // Articles user requested, via button click
     titleToDisplay: string;
 
@@ -36,19 +31,16 @@ export class ArticleListComponent {
     myFormFieldsData = new FormData(); // used by both TEMPLATE and REACTIVE forms "prepareToAdd...()"
 
     addArticleForm: FormGroup; // REACTIVE Form (not Template Form)
-    loadingPhotos = false; //         // https://nehalist.io/uploading-files-in-angular2/
-    /* ====================================== */
+    loadingPhotos = false; // https://nehalist.io/uploading-files-in-angular2/
     /* ====================================== */
     /* ====================================== */
 
     constructor(
         private _myArticleService: ArticleService,
-        private _myHttpService: HttpClient
     ) { }
 
     ngOnInit() {
 
-        // this.getAllArticles();
         this._myArticleService.listArticles().subscribe(
             (whatIGot: any[]) => {
                 this.articles = whatIGot;
@@ -82,7 +74,7 @@ export class ArticleListComponent {
     getThisManyArticles(numberArticlesPassedIn) {
         /* VALIDATION (however humble)
          - EMPTY INPUT BOX:
-         It is an EMPTY STRING "" - when you click submit on empty input.
+            It is an EMPTY STRING "" - when you click submit on empty input.
          - USER TYPES IN 0 or -1
          */
 
@@ -108,11 +100,9 @@ export class ArticleListComponent {
 
         /* UPDATE
         Sheesh bud, just do it IN-LINE over in the template. Sheesh.
-
         E.g.,
          <button (click)="clearAllArticlesOnClick()" style="font-style: italic;"
          (mousedown)="$event.preventDefault()">(Clear Articles)</button>
-
          */
     }
 
@@ -121,7 +111,7 @@ export class ArticleListComponent {
         // Used for BOTH: 1) REACTIVE-MODEL-DRIVEN FORM, 2) TEMPLATE-DRIVEN FORM
         /*
          This is JUST for photo(s) file upload part.
-         NOT the rest of the Form.
+         NOT the rest of the Form (the body, the fields).
          */
 
         var myFiles = eventPassedIn.target.files;
@@ -129,8 +119,9 @@ export class ArticleListComponent {
 
         this.myServiceFilesUpload(myFiles)
         /* MULTER & Beyond...
+
         When above line of code has finished:
-        - the file(s)(?) have been written by Multer to /public/img
+        - the file(s) have been written by Multer to /public/img
         - the web app page simply awaits the user's next click
         - user's next click should be Submit the Form
         - Submitting the Form writes the fielded metadata to the database
@@ -156,13 +147,7 @@ export class ArticleListComponent {
             console.log(myFiles[i].name);
             this.photosFilenamesArray.push(myFiles[i].name);
         }
-        console.log('We are DONE - this.photosFilenamesArray ', this.photosFilenamesArray)
-        /* Hmm. These are not the "renamed" photo file names. Hmm. Not what I need.
-         */
-        /*
-          We need the RE-NAMED file names. Which we do get, below when back from after Multer.
-         */
-
+        console.log('Original photo filenames. fwiw. this.photosFilenamesArray ', this.photosFilenamesArray)
     } // /onPhotosFileChangePostFiles()
 
 
@@ -171,89 +156,36 @@ export class ArticleListComponent {
 
         for (var i = 0; i < myFilesHere.length; i++) {
             console.log(myFilesHere[i].name);
-// This MUST BE CALLED 'file':
+            // This MUST BE CALLED 'file'. Don't do 'wr_file', 'myFile', etc. Gracias.
             myFormDataFilesForService.append('file', myFilesHere[i]);
         }
 
-        /*
-        1. Let's use HTTP Service to just whamma onto our REST API URL directly from here.
-        2. Let's next use our Article Data Service, to let IT do the HTTP whamma biz.
-
-        For # 1:
-         this._myHttpService.post('http://0.0.0.0:8089/api/v1/articles/', myFormDataFilesForService)
-
-         ------WebKitFormBoundary6CEHBFpBZAg8g080
-         Content-Disposition: form-data; name="file"; filename="AndToThinkWeAllPlayedASmallPart-NewYorkerCartoon-SlackScreenshot-2017-11-14.jpg"
-         Content-Type: image/jpeg
-
-
-         ------WebKitFormBoundary6CEHBFpBZAg8g080--
-
-         For # 2:
-         this._myArticleService.uploadArticleImages(myFormDataFilesForService)
-         ------WebKitFormBoundarygyHHLUu614ikUvU3
-         Content-Disposition: form-data; name="file"; filename="010006-MexAmerican.jpg"
-         Content-Type: image/jpeg
-
-
-         ------WebKitFormBoundarygyHHLUu614ikUvU3--
-         */
-
-/*
-        this._myArticleService.createArticle(myFormDataFilesForService)
-*/
         this._myArticleService.uploadArticleImages(myFormDataFilesForService)
             .subscribe(
                 (eventBack: any) => {
                     console.log('whew99 My Service uploadArticleImages eventBack is ', eventBack);
-
-                    /* whew99
-                     {crazymessage: "RES.SEND in JSON, Congratulations, your file was u… it was. c/o apiUploadedArticleImagesNowDoNothing", yourpath: "public/img/sometimes__1525980207472_AndToThinkWeAl…t-NewYorkerCartoon-SlackScreenshot-2017-11-14.jpg"}
-                     */
                     /*
-                     whew file.io eventBack is  {success: true, key: "06l3Ql", link: "https://file.io/06l3Ql", expiry: "14 days"}
-                     */
-                    /* E.g.,
-                     ------WebKitFormBoundary0DghgeLU8KM4eNoO
-                     Content-Disposition: form-data; name="file"; filename="010006-MexAmerican.jpg"
-                     Content-Type: image/jpeg
-
-
-                     ------WebKitFormBoundary0DghgeLU8KM4eNoO--
-                     */
-
-
-                    // Next: get those photo file names!
-                    /*
-                     FOR LOOP TIME:
-                     https://www.javascripture.com/FileList
+                     whew99 My Service uploadArticleImages eventBack is  {crazymessage: "RES.SEND in JSON, Congratulations, your file was u… it was. c/o apiUploadedArticleImagesNowDoNothing", yourpathonefile: "public/img/sometimes__1526727786186_051218krugman1-jumbo.png", allreqfiles: Array(2)}
                      */
 
                     for (var i = 0; i < eventBack.allreqfiles.length; i++) {
                         console.log(eventBack.allreqfiles[i].filename);
                         this.photosRenamedFilenamesArray.push(eventBack.allreqfiles[i].filename);
                     }
-                    console.log('We are DONE - this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray);
-
-
-                    /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                     Oy. We need the RE-NAMED file names. Back from after Multer.
-
-                     */
-
+                    console.log('Renamed Photo Filenames: this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray);
                 },
 
-
-
                 (error) => { console.log('ERROR in myService uploadArticleImages() :( ', error)}
-                )
-
+            )
     } // /myServiceFilesUpload()
 
 
-
     private prepareToAddArticleTemplateForm(addArticleFormTemplate_refPassedIn): any {
-        console.log('prepareToAddArticleTemplateForm -- addArticleFormTemplate_refPassedIn --  ?? ', addArticleFormTemplate_refPassedIn);
+        // NON-D.R.Y.  (TODO)
+        console.log('prepareToAddArticleTemplateForm -- addArticleFormTemplate_refPassedIn -- ', addArticleFormTemplate_refPassedIn);
+        /*
+         prepareToAddArticleTemplateForm -- addArticleFormTemplate_refPassedIn -- NgForm {submitted: true, _directives: Array(2), ngSubmit: EventEmitter, form: FormGroup}
+         */
 
         this.myFormFieldsData.append('articleUrl_name', addArticleFormTemplate_refPassedIn.value.articleUrl_name_template)
         this.myFormFieldsData.append('articleTitle_name', addArticleFormTemplate_refPassedIn.value.articleTitle_name_template)
@@ -265,49 +197,48 @@ export class ArticleListComponent {
         myxhr8.send(this.myFormFieldsData);
 
         return this.myFormFieldsData;
-
     }
 
     private prepareToAddArticleReactiveForm(): any {
-
-        // Now a component property ---- let myFormFieldsData = new FormData();
+        // NON-D.R.Y.  (TODO)
+        // Now a component property, not just a variable declared within this method
+        // ---- let myFormFieldsData = new FormData();
 
         console.log('-01B- this.addArticleForm ', this.addArticleForm); // FormGroup
         console.log('-01B-A- this.addArticleForm.controls ', this.addArticleForm.controls);
         console.log('-01B-B- this.addArticleForm.controls.articleTitle_formControlName.value ', this.addArticleForm.controls.articleTitle_formControlName.value); // Yes what's in input box
 
-        // (1) .controls.field << YEP, WORKS.
+        // (1) .controls.field << YEP, syntax WORKS.
         this.myFormFieldsData.append('articleUrl_name', this.addArticleForm.controls.articleUrl_formControlName.value)
 
-        // (2) .controls['field'] << YEP, WORKS.
+        // (2) .controls['field'] << YEP, syntax WORKS.
         this.myFormFieldsData.append('articleTitle_name', this.addArticleForm.controls['articleTitle_formControlName'].value)
 
-
-        // (3) .get('field') << YEP, ALSO WORKS.
+        // (3) .get('field') << YEP, syntax ALSO WORKS.
 
         // https://stackoverflow.com/questions/16104078/appending-array-to-formdata-and-send-via-ajax
         this.myFormFieldsData.append('articlePhotos_name', JSON.stringify(this.photosRenamedFilenamesArray)) // SAME as on Template Form (fwiw)
 
-/* Worked fine. See browser DevTools Network "Request Payload"
+/* Worked fine. See browser DevTools Network "Request Payload" */
          var myxhr = new XMLHttpRequest;
-         myxhr.open('POST', '/', true);
+         myxhr.open('POST', '/REACTIVE-FORM', true);
          myxhr.send(this.myFormFieldsData);
-*/
 
         return this.myFormFieldsData;
-
     } // /prepareToAddArticle()
 
 
     public addArticle(addArticleFormTemplate_refPassedIn) {
+        // Used for both Template and Reactive forms.
 
         let myFormFieldsAndFiles: any; // FormData & Etc.
 
         if (addArticleFormTemplate_refPassedIn) {
             // TEMPLATE-DRIVEN
             console.log('addArticleFormTemplate_refPassedIn.value: (TEMPLATE) ', addArticleFormTemplate_refPassedIn.value);
-                myFormFieldsAndFiles  = this.prepareToAddArticleTemplateForm(addArticleFormTemplate_refPassedIn);
+            myFormFieldsAndFiles  = this.prepareToAddArticleTemplateForm(addArticleFormTemplate_refPassedIn);
         } else {
+            // REACTIVE-MODEL-DRIVEN
             console.log('we are in addArticle - this.addArticleForm.value (REACT only) ', this.addArticleForm.value);
              myFormFieldsAndFiles = this.prepareToAddArticleReactiveForm();
         }
@@ -315,30 +246,23 @@ export class ArticleListComponent {
         this.loadingPhotos = true;
 
         console.log('addArticle() Let\'s have a look via Network tab at myFormFieldsAndFiles FormData ');
-        /*
-         We did this just for debugging to see the FormData in the browser network tab.
-         */
         var myxhr3 = new XMLHttpRequest;
         myxhr3.open('POST', '/myFormFieldsAndFiles', true);
         myxhr3.send(myFormFieldsAndFiles);
-        /* YES. JUST RIGHT.
-         ------WebKitFormBoundaryoPpanl3RULBL6o14
+        /* 20180519-0550  Working fine. Just array of photo file *names*. Not photo *files*.
+         ------WebKitFormBoundaryorWxAADqBUZELoEz
          Content-Disposition: form-data; name="articleUrl_name"
 
          http://nytimes.com
-         ------WebKitFormBoundaryoPpanl3RULBL6o14
+         ------WebKitFormBoundaryorWxAADqBUZELoEz
          Content-Disposition: form-data; name="articleTitle_name"
 
-         fgh
-         ------WebKitFormBoundaryoPpanl3RULBL6o14
+         React pics 1
+         ------WebKitFormBoundaryorWxAADqBUZELoEz
          Content-Disposition: form-data; name="articlePhotos_name"
 
-         C:\fakepath\010006-MexAmerican.jpg
-         ------WebKitFormBoundaryoPpanl3RULBL6o14
-         Content-Disposition: form-data; name="file"
-
-         C:\fakepath\010006-MexAmerican.jpg
-         ------WebKitFormBoundaryoPpanl3RULBL6o14--
+         ["sometimes__1526723160393_15Mideast-Visual1-superJumbo-v3.jpg","sometimes__1526723160400_051218krugman1-jumbo.png"]
+         ------WebKitFormBoundaryorWxAADqBUZELoEz--
          */
 
         this._myArticleService.createArticle(myFormFieldsAndFiles)
@@ -353,11 +277,8 @@ export class ArticleListComponent {
                     IN:  JSON.stringify of Array going into MongoDB
                     OUT: Must do JSON.parse what we get out
                      */
-
                     console.log('whatIJustCreated.articlePhotos JSON.parse() ', JSON.parse(whatIJustCreated.articlePhotos))
-                    /*
-                     whatIJustCreated.articlePhotos JSON.parse()
-
+                    /* Good:
                       [
                         "sometimes__1525986950360_010006-MexAmerican.jpg",
                         "sometimes__1525986950363_AndToThinkWeAllPlayedASma…t-NewYorkerCartoon-SlackScreenshot-2017-11-14.jpg"
@@ -370,7 +291,8 @@ export class ArticleListComponent {
                     if (this.articlesHowMany.length) {
                         this.articlesHowMany.push(this.articleIJustCreatedDisplay)
                     } else {
-                        // do nothing to this "First n" list. User had *not* clicked on "Display First n".
+                        // Do nothing to this "First n" list.
+                        // (User had *not* clicked on "Display First n".)
                     }
                     this.addArticleForm.reset();
                 }
