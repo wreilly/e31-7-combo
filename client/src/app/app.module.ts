@@ -20,6 +20,25 @@ const appRoutes: Routes = [
   { path: 'articles', component: ArticleListComponent },
   { path: 'articles/:article_id', component: ArticleDetailComponent }
 ];
+/* NEW. Article Detail Page URL is CHANGING.
+
+But we are KEEPING the same route/path above.
+We'll just treat/handle the "/:article_id" parameter string in a new way.
+
+See /src/app/article.service.ts
+getArticle(idPassedIn) {}
+
+WAS: http://0.0.0.0:4206/articles/5af746cea7008520ae732e2c
+
+IS NOW: http://0.0.0.0:4206/articles/trump-fuel-efficiency-rollbacks--aid--5af746cea7008520ae732e2c
+
+See also notes in /src/app/article-detail/article-detail.component.ts
+
+See also notes in /src/app/article/article.component.ts,
+where the Client App links are created,
+to navigate from the Article Component in the List,
+down to the Article Detail Component.
+ */
 
 @NgModule({
   declarations: [

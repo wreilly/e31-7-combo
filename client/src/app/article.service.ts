@@ -57,6 +57,24 @@ export class ArticleService {
 
   // GET One Article, by ID
   getArticle(idPassedIn) {
+
+     /* NEW. Article Detail Page URL is CHANGING.
+
+     But we are KEEPING the same route/path. (See /src/app/app.module.ts)
+     We'll just treat/handle the "/:article_id" parameter string in a new way.
+
+     WAS: http://0.0.0.0:4206/articles/5af746cea7008520ae732e2c
+
+     IS NOW: http://0.0.0.0:4206/articles/trump-fuel-efficiency-rollbacks--aid--5af746cea7008520ae732e2c
+
+     See also notes in /src/app/article/article.component.ts,
+     where the Client App links are created,
+     to navigate from the Article Component in the List,
+     down to the Article Detail Component.
+     */
+
+    // ORIGINAL LINE THAT CALLS API
+    // WE LEAVE THIS UNCHANGED.  API is UNCHANGED TOO.
     return this._serviceHttp.get(apiUrlStubInService + '/' + idPassedIn);
   }
 

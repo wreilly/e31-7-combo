@@ -54,6 +54,8 @@ export class ArticleDetailComponent {
     // http://0.0.0.0:8089/api/v1/articles/5af746cea7008520ae732e2c
     articleApiUrlWithId;
 
+    articleIdDelimiter = '--aid--'; // also in article.component.ts
+
     subscriptionForId; // reference to the Subscription we create, so that we can also Destroy it
 
     // FORM STUFF
@@ -89,7 +91,43 @@ export class ArticleDetailComponent {
         this.subscriptionForId = this._myActivatedRoute.params.subscribe(
             (paramsIGot) => {
                 // Note: This param name ('article_id') is set in the app.module.ts appRoutes
-                this.theArticleIdHereInDetailPage = paramsIGot['article_id']
+/* ORIGINALLY:
+                this.theArticleIdHereInDetailPage = paramsIGot['article_id'];
+*/
+                const paramsIGotTitleStubWithArticleIdHereInDetailPage = paramsIGot['article_id'];
+                // E.g., 5af746cea7008520ae732e2c
+                // Now: trump-fuel-efficiency-rollbacks--aid--5af746cea7008520ae732e2c
+
+                /* NEW. Article Detail Page URL is CHANGING.
+
+                 But we are KEEPING the same route/path above. (/src/app/app.module.ts)
+                 We'll just treat/handle the "/:article_id" parameter string in a new way.
+
+                 WAS: http://0.0.0.0:4206/articles/5af746cea7008520ae732e2c
+
+                 IS NOW: http://0.0.0.0:4206/articles/trump-fuel-efficiency-rollbacks--aid--5af746cea7008520ae732e2c
+
+                 See also /src/app/article.service.ts
+                 getArticle(idPassedIn) {}
+
+                 See also notes in /src/app/article/article.component.ts,
+                 where the Client App links are created,
+                 to navigate from the Article Component in the List,
+                 down to the Article Detail Component.
+                 */
+
+                // https://stackoverflow.com/questions/830855/what-regex-would-capture-everything-from-mark-to-the-end-of-a-line
+                console.log('ARTICLE-DETAIL -01- GET-ARTICLE() paramsIGotTitleStubWithArticleIdHereInDetailPage ', paramsIGotTitleStubWithArticleIdHereInDetailPage);
+                const regexResultsArrayArticleId = paramsIGotTitleStubWithArticleIdHereInDetailPage.match(/--aid--.*$/);
+                console.log('ARTICLE-DETAIL -02- GET-ARTICLE() regexResultsArrayArticleId ', regexResultsArrayArticleId);
+
+                this.theArticleIdHereInDetailPage = regexResultsArrayArticleId[0].slice(this.articleIdDelimiter.length) // from '--aid--' to the end will (should?) yield the MongoDB _id #. H'rrah.
+
+
+
+
+
+
 
                 this.articleApiUrlWithId = this.apiUrlStubInThisComponent + this.theArticleIdHereInDetailPage;
 

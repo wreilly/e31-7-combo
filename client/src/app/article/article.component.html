@@ -1,5 +1,10 @@
 <strong>ARTICLE.COMPONENT</strong>
+<!-- ORIGINAL  E.g.,  http://0.0.0.0:4206/articles/5af83649f2fffa14c4a22cd7
 <h3><a routerLink="/articles/{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
+-->
+<!-- NEW IDEA: E.g., http://0.0.0.0:4206/articles/school-shootings-drills-risks--aid--5af83649f2fffa14c4a22cd7   -->
+<h3>NEW STUFF ? <a routerLink="/articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
+<p>Supposed to be: /articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}}</p>
 
 <p>Some Times - Article Detail Page: /articles/{{articleHere._id}}</p>
 

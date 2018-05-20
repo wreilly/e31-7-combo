@@ -34,6 +34,11 @@ middlewareModule.myMiddlewareTrimUrl = function(req, res, next) {
 // Bang-free: YES. WORKS. LOVELY.
     req.body.articleUrl_name = req.body.articleUrl_name.replace(/(.*?\?(?:(?!\?))).*/, '$1')
 
+    /*
+     // btw,  it is the *2nd* '?' question mark in that crazy string
+     //        that represents the '?' in the NYTimes URL we are trying to find. Cheers.
+    */
+
     console.log('MIDDLEWARE! POST-REGEX! req.body.articleUrl_name now is: ', req.body.articleUrl_name)
 
 // .replace(/(.*?\?(?:(?!\?))).*/, '$1')
