@@ -118,15 +118,37 @@ export class ArticleDetailComponent {
 
                 // https://stackoverflow.com/questions/830855/what-regex-would-capture-everything-from-mark-to-the-end-of-a-line
                 console.log('ARTICLE-DETAIL -01- GET-ARTICLE() paramsIGotTitleStubWithArticleIdHereInDetailPage ', paramsIGotTitleStubWithArticleIdHereInDetailPage);
-                const regexResultsArrayArticleId = paramsIGotTitleStubWithArticleIdHereInDetailPage.match(/--aid--.*$/);
-                console.log('ARTICLE-DETAIL -02- GET-ARTICLE() regexResultsArrayArticleId ', regexResultsArrayArticleId);
 
-                this.theArticleIdHereInDetailPage = regexResultsArrayArticleId[0].slice(this.articleIdDelimiter.length) // from '--aid--' to the end will (should?) yield the MongoDB _id #. H'rrah.
+                /* **********************************
+                REGEX
+                Note: We wish to support two things:
+                1) The new "Semantically Useful" URLs
+                2) The old "Just the ID #" URLs
+                Why?
+                Dunno. Seems friendly, wise, forward looking.
+                Makes consultation of the REST API (which only traffics in ID #s)
+                portable to, yeah, copy & pasting URLs into the web app.
+                ("copy & pasta..." ;o)
 
+                For # 2 above, our assumption is:
+                - If the delimiter '--aid--' is not found, ("article id")
+                -- then the entire passed-in parameter must be the ID #, simply.
+                No further bullet-proofing.
+                 */
 
+                if (paramsIGotTitleStubWithArticleIdHereInDetailPage.match(/--aid--/)) {
 
+                    const regexResultsArrayArticleId = paramsIGotTitleStubWithArticleIdHereInDetailPage.match(/--aid--.*$/);
 
+                    console.log('ARTICLE-DETAIL -02- GET-ARTICLE() regexResultsArrayArticleId ', regexResultsArrayArticleId);
 
+                    this.theArticleIdHereInDetailPage = regexResultsArrayArticleId[0].slice(this.articleIdDelimiter.length) // from '--aid--' to the end will (should?) (does!) yield the MongoDB _id #. H'rrah.
+                    // We now have simply (and correctly): E.g. 5af746cea7008520ae732e2c
+                } else {
+                    // NO '--aid--'. Must be just ID # (E.g. 5af746cea7008520ae732e2c)
+                    this.theArticleIdHereInDetailPage = paramsIGotTitleStubWithArticleIdHereInDetailPage;
+                    // We now have simply (and correctly): E.g. 5af746cea7008520ae732e2c
+                }
 
 
                 this.articleApiUrlWithId = this.apiUrlStubInThisComponent + this.theArticleIdHereInDetailPage;
