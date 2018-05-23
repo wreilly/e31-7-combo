@@ -3,7 +3,7 @@
 var appFromAppJs = require('../app')
 
 var port = 8089
-// var port = 8087 // for Assignment '7' // changed mind back.
-var appName = 'wr-09week-some-times-rest-api'
 
-appFromAppJs.listen(port, () => console.log(appName + ' listening on: ' + port + ' btw you should type \n nohup npm run start & \n to run this server continuously (even after closing the terminal window). Cheers \n'))
+var appName = 'wr-app-some-times-rest-api'
+
+appFromAppJs.listen(port, () => console.log(appName + ' listening on: ' + port + ' btw you should type \n nohup npm run start & \n to run this server continuously (even after closing the terminal window). Cheers \n Also, remember to start your Angular Client separately: \n npm run start --> ng serve (:4206)...'))
