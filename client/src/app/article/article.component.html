@@ -3,8 +3,32 @@
 <h3><a routerLink="/articles/{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
 -->
 <!-- NEW IDEA: E.g., http://0.0.0.0:4206/articles/school-shootings-drills-risks--aid--5af83649f2fffa14c4a22cd7   -->
-<h3>NEW STUFF ? <a routerLink="/articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
-<p>Supposed to be: /articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}}</p>
+
+<!-- https://toddmotto.com/angular-ngif-else-then#ngif-and-else -->
+<!--
+YES WORKS. But I am using the "ternary" alternative below...
+<div *ngIf="articleUrlTitleStub; else noStub_ref">
+    <h3>YES STUB<a routerLink="/articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
+    <p style="font-size: smaller">/articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}} (o boy articleUrlTitleStub)</p>
+</div>
+<ng-template ref-noStub_ref>
+    <h3>NO STUB <a routerLink="/articles/{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
+    <p style="font-size: smaller">/articles/{{articleHere._id}} (no "articleUrlTitleStub")</p>
+</ng-template>
+-->
+
+<!-- "ternary"-ish -->
+<ng-container
+    *ngIf="articleUrlTitleStub; then yesStub_ref; else noStub_ref">
+</ng-container>
+<ng-template ref-yesStub_ref>
+    <h3><a routerLink="/articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
+    <p style="font-size: smaller">/articles/{{articleUrlTitleStub}}{{articleIdDelimiter}}{{articleHere._id}} (o boy articleUrlTitleStub)</p>
+</ng-template>
+<ng-template ref-noStub_ref>
+    <h3><a routerLink="/articles/{{articleHere._id}}">{{ articleHere.articleTitle }}</a></h3>
+    <p style="font-size: smaller">/articles/{{articleHere._id}} (no "articleUrlTitleStub")</p>
+</ng-template>
 
 <p>Some Times - Article Detail Page: /articles/{{articleHere._id}}</p>
 
