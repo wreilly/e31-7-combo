@@ -52,10 +52,9 @@ var path = require('path')
 
 const client_dist_dir_done_right = path.join(__dirname, '..', 'client', 'dist');
 
-/* **********  BREAKING APART THE "COMBO"  ***************
- * Q. Why?
- * A. 1. Takes a little longer to develop the Angular client side: 'ng build' vs. 'ng serve'
- * A. 2. It appears I am losing the console.log() from Angular client code (in Broswer dev console). :o(
+/* **********  USING THE "COMBO"  ***************
+ *
+ * Even Though: Takes a little longer to develop the Angular client side: 'ng build' vs. 'ng serve'
  */
 appCombo.use('/', express.static(client_dist_dir_done_right))
 
@@ -94,6 +93,10 @@ var uri_to_cscie31_db = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}
 // E.g. new Article().save()
 
 /* */
+/* HEY.
+MongoDB Cloud Atlas thing went from MongoDB 3.4 to 3.6 recently (May 2018).
+This app-combo.js right now is still using 3.4 connection, to that 3.6 database. Works. odd.
+See app.js re: proper new upgraded 3.6 way to connect application to MongoDB 3.6, via mongoose connnect(), (though as I say the 3.4 is still working (seems strange))  Cheers. */
 mongoose.connect(uri_to_cscie31_db)
     .then(
         // resolve

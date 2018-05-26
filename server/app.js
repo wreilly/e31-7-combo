@@ -51,7 +51,7 @@ ASSIGNMENT 7
 
 const client_dist_dir_done_right = path.join(__dirname, '..', 'client', 'dist');
 
-/* **********  BREAKING APART THE "COMBO"  ***************
+/* **********  By Commenting Out this line, I am BREAKING APART THE "COMBO"  ***************
 * Q. Why?
 * A. 1. Takes a little longer to develop the Angular client side: 'ng build' vs. 'ng serve'
 * A. 2. It appears I am losing the console.log() from Angular client code (in Broswer dev console). :o(
@@ -74,17 +74,58 @@ app.use(bodyParser.urlencoded({extended: false}))
 // app.use(bodyParser.json) // <<< NO !!!
 app.use(bodyParser.json()) // << Yes. You have to *START IT UP* ! (oy)
 
-
 var mongoose = require('mongoose')
 /*
 https://docs.mongodb.com/manual/reference/connection-string/#connections-connection-options
-
 mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-
 mongodb://db1.example.net:27017,db2.example.net:2500/?replicaSet=test&connectTimeoutMS=300000
-
 */
+/*  ***NEW*** MAY 2018
+ MONGODB 3.6 up on cloud.mongodb.com ("Atlas")
+ 3.6+
+ mongodb+srv://wr_mongodb_admin:<PASSWORD>@clusterwr03-n783b.mongodb.net/test?retryWrites=true
+ Hey! got it to frickin' work.
+ Needed Options {dbName='cscie31'} on mongoose connect(). Voilà.
+*/
+var uri_to_cscie31_db = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@clusterwr03-n783b.mongodb.net/test?retryWrites=true`;
+/*
+Command Line Shell:
+ $ pwd
+ /Users/william.reilly/dev/JavaScript/CSCI-E31
+
+ mongonewshell  << WORKS  (Without the '--authenticationDatabase' it did FAIL)
+
+ #!/bin/sh
+ mongo "mongodb+srv://clusterwr03-n783b.mongodb.net/test" --username wr_mongodb_admin --authenticationDatabase admin
+*/
+/*  WAS:
+MONGODB 3.4 up on cloud.mongodb.com ("Atlas")
+ */
+/*  WORKs FINE !!! :)   See above for new 3.6
+
 var uri_to_cscie31_db = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@clusterwr03-shard-00-00-n783b.mongodb.net:27017,clusterwr03-shard-00-01-n783b.mongodb.net:27017,clusterwr03-shard-00-02-n783b.mongodb.net:27017/cscie31?ssl=true&replicaSet=ClusterWR03-shard-0&authSource=admin`
+*/
+console.log('ugh!  !!!!!!!!!!!!!!!!!!!    uri_to_cscie31_db ', uri_to_cscie31_db)
+
+/*
+ ugh!  !!!!!!!!!!!!!!!!!!!   3.6 says: uri_to_cscie31_db  mongodb+srv://wr_mongodb_admin03:mongodb_admin03@clusterwr03-n783b.mongodb.net/test?retryWrites=true
+
+
+ MONGOOSE FIXING TIME ...
+ http://mongoosejs.com/docs/compatibility.html
+
+ MongoDB Server 3.4.x: mongoose >=4.7.3 or 5.x
+ MongoDB Server 3.6.x: mongoose 5.x, or >=4.11.0 with No >> useMongoClient and I Don't Use/Need >> usePushEach
+
+ Hmm I have:   "mongoose": "^5.0.12",  ?
+
+ https://stackoverflow.com/questions/44749700/how-to-set-usemongoclient-mongoose-4-11-0
+No >> Add { useMongoClient: true }
+I DO need to say: {dbName: 'cscie31'}   Bon.
+ */
+
+
+
 // The default connection here simply "returns" undefined
 // But the mongoose object here knows what db it is connected to
 // I don't need to obtain a reference to the connected db, per se, to use here in my code
@@ -93,7 +134,19 @@ var uri_to_cscie31_db = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}
 // E.g. new Article().save()
 
 /* */
-mongoose.connect(uri_to_cscie31_db)
+mongoose.connect(uri_to_cscie31_db, {dbName: 'cscie31'})    //    , { useMongoClient: true })
+/* Yes. Definitely needed:
+     http://mongoosejs.com/docs/connections.html#options
+     https://stackoverflow.com/questions/48917591/fail-to-connect-mongoose-to-atlas/48917626#48917626
+     {dbName: 'cscie31'}
+     */
+/* Strange. This was not needed. Whereas on Command Line Shell, --authenticationDatabase definitely WAS needed. Hmm.
+     https://docs.mongodb.com/manual/reference/connection-string/#urioption.authSource
+     {authSource: 'admin'}
+     */
+    /*
+     WARNING: The `useMongoClient` option is no longer necessary in mongoose 5.x, please remove it.
+     */
     .then(
         // resolve
         () => {

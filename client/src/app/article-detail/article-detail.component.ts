@@ -474,8 +474,9 @@ B). Or, since the form information is *already here* in the component .TS, you c
                     (articleJustDeleted) => {
                         // data back
                         console.log('articleJustDeleted ', articleJustDeleted);
-                        location.replace('/articles')
+                        location.replace('/articles/displayn')
                         // After DELETE, go to list page, not article page (would be 404)
+                        // New: our "display n" articles page.
                     }
                 )
 

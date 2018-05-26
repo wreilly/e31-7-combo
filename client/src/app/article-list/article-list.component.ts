@@ -10,8 +10,17 @@ import { ArticleService } from '../article.service';
 })
 export class ArticleListComponent {
 
+    /*
+    Trying to parameterize this Component.
+    Usually gets ALL Articles
+   But on "display-n" page, let's try to use it get 'N' Articles
+
+   See logic in ngOnInit()
+     */
+    numberOfArticlesToGet = 0; // init
+
     articles = [];
-    articlesHowMany = []; // Articles user requested, via button click
+    articlesHowMany = []; // Array of Articles user requested, via button click
     titleToDisplay: string;
 
     /* ====================================== */
@@ -42,11 +51,20 @@ export class ArticleListComponent {
 
     ngOnInit() {
 
-        this._myArticleService.listArticles().subscribe(
-            (whatIGot: any[]) => {
-                this.articles = whatIGot;
-            }
-        );
+        if (this.numberOfArticlesToGet == 0) {
+            // GET ALL ("Plan A")
+            console.log("// GET ALL (Plan A)");
+            this._myArticleService.listArticles().subscribe(
+                (whatIGot: any[]) => {
+                    this.articles = whatIGot;
+                }
+            );
+        } else {
+            // GET SOME ("Plan B")
+            console.log("// GET SOME (Plan B)")
+            // On "Display-N" page user clicked of some number (not 0)
+            this.getThisManyArticles(this.numberOfArticlesToGet)
+        }
 
         this.addArticleForm = new FormGroup({
             articleUrl_formControlName: new FormControl(null, Validators.required),
@@ -55,8 +73,9 @@ export class ArticleListComponent {
         });
 
     }
-    runDisplayTitle(event) {
-        this.titleToDisplay = event;
+
+    runDisplayTitle(articleTitlePassedIn) {
+        this.titleToDisplay = articleTitlePassedIn;
     }
 
     getAllArticlesOnClick(): void {

@@ -1,0 +1,72 @@
+<strong>ARTICLE-ADD.COMPONENT</strong>
+<div class="row" style="border-style: dashed; border-color: darkred">
+  <div>You clicked:</div>
+  <div style="font-size: x-large">{{titleToDisplay}}</div>
+</div>
+
+<div class="row">
+  <div class="column left-2">
+    <app-article-list>
+      app-article-list here, would seem...
+    </app-article-list>
+
+  </div>
+  <div class="column right-2">
+    <br />
+    <h3>2. Add a New Article</h3>
+    <p>2.A. Angular REACTIVE-MODEL-DRIVEN FORM</p>
+    <div style="border-color: green; border-style: dotted; padding: 10px;">
+      <form [formGroup]="addArticleForm" on-ngSubmit="addArticle(null)" enctype="multipart/form-data">
+        <label for="articleUrl_id">NYT URL: </label>
+        <input type="text" id="articleUrl_id" name="articleUrl_name" size="40" formControlName="articleUrl_formControlName" />
+        <br />
+        <label for="articleTitle_id">Headline: </label>
+        <input type="text" id="articleTitle_id" name="articleTitle_name" size="40" formControlName="articleTitle_formControlName" />
+        <br />
+        <label for="articlePhotos_id">Photo(s): </label>
+        <input type="file"
+               id="articlePhotos_id"
+               name="articlePhotos_name"
+               formControlName="articlePhotos_formControlName"
+               on-change="onPhotosFileChangePostFiles($event)"
+               multiple>
+        <button type="submit">Add Article via Reactive/Model-Driven Form</button>
+      </form>
+    </div>
+    <hr />
+    <p>2.B. Angular TEMPLATE-DRIVEN FORM</p>
+    <div style="border-color: blue; border-style: dotted; padding: 10px;">
+      <form ref-addArticleFormTemplate_ref="ngForm" on-ngSubmit="addArticle(addArticleFormTemplate_ref)">
+        <label for="articleUrl_id_template">NYT URL: </label>
+        <input type="text" id="articleUrl_id_template" name="articleUrl_name_template" size="40" ngModel />
+        <br />
+        <label for="articleTitle_id_template">Headline: </label>
+        <input type="text" id="articleTitle_id_template" name="articleTitle_name_template" size="40" ngModel />
+        <br />
+
+        <label for="articlePhotos_id_template">Photo(s): </label>
+        <input type="file"
+               id="articlePhotos_id_template"
+               name="articlePhotos_name"
+               on-change="onPhotosFileChangePostFiles($event)"
+               multiple
+        >
+        <button type="submit">Add Article via Template-Driven Form</button>
+      </form>
+    </div>
+    <hr />
+    <div  *ngIf="articleIJustCreatedBoolean" style="border-style: dotted; border-color: red">
+      <!-- Careful!  Setting this to TRUE  BREAKS STUFF.
+           (On page load there is no "just added" article, kid. Sheesh)
+          <div  *ngIf="true">
+      -->
+      <h4>Article You Just Added (hard-coded to true for the moment)</h4>
+      <!-- Commenting out for the moment. Ye gods.
+            <app-article
+                    [articleToSendDown]="articleIJustCreatedDisplay"
+                    on-myEventEmitterSendTitleAlias="runDisplayTitle($event)"></app-article>
+      -->
+    </div>
+    <hr />
+  </div>
+
