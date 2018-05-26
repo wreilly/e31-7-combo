@@ -11,14 +11,26 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import {HomeComponent} from "./home/home.component";
 import {ArticleListComponent} from "./article-list/article-list.component";
-import { ArticleDetailComponent } from "./article-detail/article-detail.component"
+import { ArticleDetailComponent } from "./article-detail/article-detail.component";
+import { ArticleAddComponent } from './article-add/article-add.component';
+import { ArticleDisplayNComponent } from './article-display-n/article-display-n.component'
 
 
-
+/* ORIG. WAS. WORKS. WORKED. BACKUP. BAK. ETC. CHEERS.
+ const appRoutes: Routes = [
+ { path: '', component: HomeComponent },
+ { path: 'articles', component: ArticleAddComponent }, // << Used to be ArticleListComponent, fwiw
+ { path: 'articles/:article_id', component: ArticleDetailComponent }
+ ];
+ */
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'articles', component: ArticleListComponent },
+  { path: 'articles/add', component: ArticleAddComponent },
+  { path: 'articles/displayn', component: ArticleDisplayNComponent },
   { path: 'articles/:article_id', component: ArticleDetailComponent }
+/* TODO Next up ...
+  { path: 'articles/:article_id/edit', component: ArticleEditComponent },
+*/
 ];
 /* NEW. Article Detail Page URL is CHANGING.
 
@@ -48,7 +60,9 @@ down to the Article Detail Component.
     FooterComponent,
       HomeComponent,
       ArticleListComponent,
-      ArticleDetailComponent
+      ArticleDetailComponent,
+      ArticleAddComponent,
+      ArticleDisplayNComponent
   ],
   imports: [
     BrowserModule,
