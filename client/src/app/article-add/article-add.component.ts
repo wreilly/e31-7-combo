@@ -11,8 +11,13 @@ import { ArticleService } from '../article.service';
 export class ArticleAddComponent  {
 
   articles = [];
+
+/* Not Used here in <app-article-add>
   articlesHowMany = []; // Articles user requested, via button click
-  titleToDisplay: string;
+*/
+/*
+  titleToDisplay: string; // Not used either. Maybe we will (for the h. of it), on the "Article Just Added" emit button. y not. T.B.D. TODO
+*/
 
 
   /* ====================================== */

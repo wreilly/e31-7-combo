@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ArticleService } from '../article.service';
 
@@ -13,14 +13,38 @@ export class ArticleListComponent {
     /*
     Trying to parameterize this Component.
     Usually gets ALL Articles
+    WAS:
+    // numberOfArticlesToGet; // simply declared...
+
+    NOW (TRYING):  To be an "@Input()". Hmm
    But on "display-n" page, let's try to use it get 'N' Articles
 
    See logic in ngOnInit()
+
+   From "parent" <app-article-display-n> is passed down to here
+     numberOfArticlesToGetHereInDisplayN as numberOfArticlesToGetAlias
+     (We have a hard-coded 2 from Display-N, for now.)
+     And *yes* that 2 is seen in ngOnInit
+
+     O la. See Also: "ngOnChanges". Ye Gods.
      */
-    numberOfArticlesToGet = 0; // init
+    @Input('numberOfArticlesToGetAlias') numberOfArticlesToGet; // Need to init ?? = 0; // init
 
     articles = [];
+
+    /*
+    This Array to hold "articlesHowMany" will be factored out ( ? ) from here in <app-article-list>,
+     ** but ** a similar concept will be introduced, to have the initial Array "articles"
+    perform a new function:
+    - hold a certain number of Articles, (numberOfArticlesToGet)
+     -- OR  --,
+    - hold All Articles.
+    This Array "articlesHowMany" will still be used, over on "display-n" component. Cheers.
+     */
     articlesHowMany = []; // Array of Articles user requested, via button click
+
+
+
     titleToDisplay: string;
 
     /* ====================================== */
@@ -53,7 +77,7 @@ export class ArticleListComponent {
 
         if (this.numberOfArticlesToGet == 0) {
             // GET ALL ("Plan A")
-            console.log("// GET ALL (Plan A)");
+            console.log("// GET ALL (Plan A) this.numberOfArticlesToGet ", this.numberOfArticlesToGet);
             this._myArticleService.listArticles().subscribe(
                 (whatIGot: any[]) => {
                     this.articles = whatIGot;
@@ -61,7 +85,9 @@ export class ArticleListComponent {
             );
         } else {
             // GET SOME ("Plan B")
-            console.log("// GET SOME (Plan B)")
+            console.log("// GET SOME (Plan B) this.numberOfArticlesToGet ", this.numberOfArticlesToGet)
+            // YES. the hard-coded 2 is seen here. SFSG. So Far, So Good.
+
             // On "Display-N" page user clicked of some number (not 0)
             this.getThisManyArticles(this.numberOfArticlesToGet)
         }
@@ -72,6 +98,25 @@ export class ArticleListComponent {
             articlePhotos_formControlName: new FormControl(null, Validators.required)
         });
 
+    }
+
+    ngOnChanges(myChanges: SimpleChanges) {
+        // https://angular.io/guide/lifecycle-hooks#onchanges
+
+        console.log('o la. OnChanges. this.numberOfArticlesToGet ', this.numberOfArticlesToGet);
+
+        for (let myPropName in myChanges) {
+            let myChng = myChanges[myPropName];
+            console.log('myPropName ', myPropName);
+            console.log('myChng ', myChng);
+            
+            let cur = JSON.stringify(myChng.currentValue);
+            console.log('o la. OnChanges. CUR: ', cur)
+
+            let prev = JSON.stringify(myChng.previousValue);
+            console.log('o la. OnChanges. PREV: ', prev)
+        }
+        this.getThisManyArticles(this.numberOfArticlesToGet) // cur, yes ?
     }
 
     runDisplayTitle(articleTitlePassedIn) {
@@ -92,6 +137,10 @@ export class ArticleListComponent {
 
 
     getThisManyArticles(numberArticlesPassedIn) {
+        // N.B. This function is (currently) in TWO PLACES:
+        // 1. Here in <app-article-list>
+        // 2. (NEW) In <app-article-display-n>
+
         /* VALIDATION (however humble)
          - EMPTY INPUT BOX:
             It is an EMPTY STRING "" - when you click submit on empty input.
@@ -101,10 +150,18 @@ export class ArticleListComponent {
         if (numberArticlesPassedIn.value === "" || numberArticlesPassedIn.value < 1) {
             console.log('Invalid number of articles requested.') // TODO Flash msg or similar
         } else {
+            console.log('getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn)
+/*
             this._myArticleService.listFirstNArticles(numberArticlesPassedIn.value)
+*/
+            this._myArticleService.listFirstNArticles(numberArticlesPassedIn)
                 .subscribe(
                     (whatIGot: any[]) => {
+/* Comment Out I do believe ?
                         this.articlesHowMany = whatIGot;
+*/
+                        console.log('whatIGot.length ', whatIGot.length)
+                        this.articles = whatIGot; // NEW. (Hmm, do we keep line above? or kill? hmm)
                     }
                 );
         }

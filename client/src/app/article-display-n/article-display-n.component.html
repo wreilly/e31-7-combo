@@ -13,8 +13,21 @@
         <input type="number" id="numberArticles_id" name="numberArticles_name" style="width: 4em" min="1" placeholder="#..." #numberArticlesNgRef />
         <br />
         <br />
-        <button (click)="getThisManyArticles(numberArticlesNgRef)"
-                (mousedown)="$event.preventDefault()">Get 'n' Articles</button>
+<!-- I Used To: Send in the whole referenced HTMLInputElement: (tsk, tsk)
+        <button (click)="getThisManyArticles(numberArticlesNgRef)" <<<<
+
+        Now Instead I: Send, to a function that expects/uses/consumes/needs a NUMBER, a ("ta-da!"): NUMBER.
+        Mo' better
+
+        Also: Let's rename this function here in "Display-N":
+        * <app-article-display-n>
+          getThisManyArticles(NUMBER)        <<<  WAS
+          userWantsThisManyArticles(NUMBER)  <<< NOW IS
+        * <app-article-list>
+          getThisManyArticles(NUMBER)        <<< KEEP AS WAS; SAME NAME AS PRIOR
+-->
+        <button (click)="userWantsThisManyArticles(numberArticlesNgRef.value)"
+                (mousedown)="$event.preventDefault()">I, User, Want (to Get) 'n' Articles</button>
         <br />
       </div>
     </div>
@@ -40,8 +53,8 @@
             [articleToSendDown]="article"
             on-myEventEmitterSendTitleAlias="runDisplayTitle($event)"></app-article>
     <hr />
-    <app-article-list>
-      app-article-list here, would seem...
+    <app-article-list bind-numberOfArticlesToGetAlias="numberOfArticlesToGetHereInDisplayN">
+      app-article-list here, would seem... with passed-in number of articles to get
     </app-article-list>
   </div>
 </div>

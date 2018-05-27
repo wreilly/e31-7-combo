@@ -9,9 +9,19 @@ import { ArticleService } from '../article.service'
 })
 export class ArticleDisplayNComponent implements OnInit {
 
-  titleToDisplay: string = 'display N titleToDisplay hard-coded for now';
+  titleToDisplay: string = ''; // No longer needed. I think. 'display N titleToDisplay hard-coded for now';
   articlesHowMany = []; //  << How I did init on original article-list.component.ts (worked)
-    //  >> This did work, to init:  // articlesHowMany:[string] =['']; // init
+    //  >> This also did work, to init:  // articlesHowMany:[string] =['']; // init
+    articles = []; // NEW, hey
+
+    numberOfArticlesToGetHereInDisplayN = 2; // need to init, hey? Yes. // Similar to as seen in article-list.component.ts
+
+/* Naw This was NOT the right idea.
+Parent does not "emit event" to notify Child. No.
+Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
+    @Output() myEventEmitterTellChildNewNumberArticlesToGet = new EventEmitter()
+*/
+
 
   constructor(private _myArticleService: ArticleService) { }
 
@@ -28,23 +38,89 @@ export class ArticleDisplayNComponent implements OnInit {
 
   clearAllArticlesOnClick(): void {
     this.articlesHowMany = []; // re-init
+      this.titleToDisplay = ''; // likewise
   }
 
 
-  getThisManyArticles(numberArticlesPassedIn) {
+  userWantsThisManyArticles(numberArticlesPassedIn) {
+      /*
+       Also: Let's rename this function here in "Display-N":
+       * <app-article-display-n>
+       getThisManyArticles(NUMBER)        <<<  WAS
+       userWantsThisManyArticles(NUMBER)  <<< NOW IS
+       * <app-article-list>
+       getThisManyArticles(NUMBER)        <<< KEEP AS WAS; SAME NAME AS PRIOR
+       */
+
     /* VALIDATION (however humble)
      - EMPTY INPUT BOX:
      It is an EMPTY STRING "" - when you click submit on empty input.
      - USER TYPES IN 0 or -1
      */
 
-    if (numberArticlesPassedIn.value === "" || numberArticlesPassedIn.value < 1) {
+/* tsk, tsk:
+ I Used To: Send in the whole referenced HTMLInputElement: (tsk, tsk)
+ <button (click)="getThisManyArticles(numberArticlesNgRef)" <<<<
+
+ Now Instead I: Send, to a function that expects/uses/consumes/needs a NUMBER, a ("ta-da!"): NUMBER.
+ Mo' better
+
+      if (numberArticlesPassedIn.value === "" || numberArticlesPassedIn.value < 1) {
+*/
+      if (numberArticlesPassedIn === "" || numberArticlesPassedIn < 1) {
       console.log('Invalid number of articles requested.') // TODO Flash msg or similar
     } else {
-      this._myArticleService.listFirstNArticles(numberArticlesPassedIn.value)
+        /*
+        NEW. Do two jobs: No, wrong about being wrong. O la. >> << Hmm, I think this belongs over in article-list.component.ts, not here in display-n.
+        1) The job we were doing: go to the Service, get back # of articles
+        2) Now, set a new component property to that same #, such that:
+         // >> Huh? No. elsewhere you go get that same # of articles in a *separate* service call.
+         such that: you "send" that number of articles down to the 'child' article-list and let *it* go get Articles.
+         Ah-hah. I think.
+
+        Kinda crzy, I kno.
+         */
+        // # 2.)
+ // WRONG I THINK << No, right, I think.
+/*
+          this.numberOfArticlesToGetHereInDisplayN = numberArticlesPassedIn.value
+*/
+          this.numberOfArticlesToGetHereInDisplayN = numberArticlesPassedIn
+        // Boom we are off to the races: my '3' let's say in a split second will go down to the 'child' article-list
+        // which will do its own Service find(3)... J'espere.
+          // Hmm.
+          /* No. Chrissakes no.
+          It ain't just gonna go and update your G.D. child component, just because
+          you changed the damned value here in the parent.
+          No.
+          Yes you got to pass in the value one time, at the beginning of loading this
+          G.D. parent, which yeah in turn loads the G.D. child, and the G.D. child
+          gets that original (hard-coded 2) value yeah yeah.
+          But that is NOT going to serve as the mechanism to pass subsequent changes. Sheesh. Yeesh.
+          TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
+           */
+          console.log('oh dear. # 2. this.numberOfArticlesToGetHereInDisplayN ', this.numberOfArticlesToGetHereInDisplayN)
+
+        // # 1.)
+/*
+          this._myArticleService.listFirstNArticles(numberArticlesPassedIn.value)
+*/
+          this._myArticleService.listFirstNArticles(numberArticlesPassedIn)
           .subscribe(
               (whatIGot: any[]) => {
                 this.articlesHowMany = whatIGot;
+
+                // Line below is NOT affecting "articles[]" on child Component article-list, of course. Yeesh.
+                  // Line below is doing NOTHING, really.
+/* fuggedaboudid
+                this.articles = whatIGot; // NEW. (Hmm, do we keep line above? or kill? hmm)
+*/
+
+                  /*
+                  TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
+                  NO NO NO NO NO NO. See "ngOnChanges" instead. Child article-list compomnent.
+                  this.myEventEmitterTellChildNewNumberArticlesToGet(numberArticlesPassedIn);
+                  */
               }
           );
     }

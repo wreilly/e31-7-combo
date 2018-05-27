@@ -105,7 +105,7 @@ MONGODB 3.4 up on cloud.mongodb.com ("Atlas")
 
 var uri_to_cscie31_db = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@clusterwr03-shard-00-00-n783b.mongodb.net:27017,clusterwr03-shard-00-01-n783b.mongodb.net:27017,clusterwr03-shard-00-02-n783b.mongodb.net:27017/cscie31?ssl=true&replicaSet=ClusterWR03-shard-0&authSource=admin`
 */
-console.log('ugh!  !!!!!!!!!!!!!!!!!!!    uri_to_cscie31_db ', uri_to_cscie31_db)
+console.log('!  !!!!!!!!!!!!!!!!!!!    uri_to_cscie31_db ', uri_to_cscie31_db)
 
 /*
  ugh!  !!!!!!!!!!!!!!!!!!!   3.6 says: uri_to_cscie31_db  mongodb+srv://wr_mongodb_admin03:mongodb_admin03@clusterwr03-n783b.mongodb.net/test?retryWrites=true
@@ -150,7 +150,7 @@ mongoose.connect(uri_to_cscie31_db, {dbName: 'cscie31'})    //    , { useMongoCl
     .then(
         // resolve
         () => {
-            console.log('Happy database.')
+            console.log('Happy database. btw: {dbName: \'cscie31\'}')
         },
             // reject
         (err) => {

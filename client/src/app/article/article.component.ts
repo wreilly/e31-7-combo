@@ -71,7 +71,7 @@ export class ArticleComponent implements OnInit {
     For these, we should make no kebab, add no '--aid--'
      */
 
-    console.log('PRE-REGEX! - ARTICLE COMPONENT - this.articleHere.articleUrl as passed in was: ', this.articleHere.articleUrl)
+//    console.log('PRE-REGEX! - ARTICLE COMPONENT - this.articleHere.articleUrl as passed in was: ', this.articleHere.articleUrl)
     // https://www.nytimes.com/2018/05/20/us/school-shootings-drills-risks.html
 
     /* WRONG TEST. No '?' at this point. Oy!
@@ -120,21 +120,22 @@ THEN I CHANGED TO: https://www.nytimes.com/2018/05/21/opinion/trump-investigatio
 
       // *** THANK YOU regex101.com ***
 
-      console.log('POST-REGEX! - ARTICLE COMPONENT - this.articleUrlTitleStub now is: ', this.articleUrlTitleStub);
+//      console.log('POST-REGEX! - ARTICLE COMPONENT - this.articleUrlTitleStub now is: ', this.articleUrlTitleStub);
       // working. h'rrah   E.g., school-shootings-drills-risks
+ //    console.log('-01- this.articleHere.articleUrl is ', this.articleHere.articleUrl)
 
     } else {
    // No '.html' present
       // No. No '?' present. Do not use this "question-mark-hunting" RegEx
       // E.g., https://nytimes.com
-      console.log('99999999999999999 this.articleUrlTitleStub is empty yes? ', this.articleUrlTitleStub)
+//      console.log('99999999999999999 this.articleUrlTitleStub is empty yes? ', this.articleUrlTitleStub)
    if(this.articleUrlTitleStub) { // No. Not 'true'. Good.
-        console.log('88888 hmm guess it was TRUE wtf this.articleUrlTitleStub ', this.articleUrlTitleStub)
+//        console.log('88888 hmm guess it was TRUE wtf this.articleUrlTitleStub ', this.articleUrlTitleStub)
    } else { // Yes. 'false'. Good.
-        console.log('77777777 o goodie tests to FALSE this.articleUrlTitleStub ', this.articleUrlTitleStub)
+//        console.log('77777777 o goodie tests to FALSE this.articleUrlTitleStub ', this.articleUrlTitleStub)
    }
 
-   console.log('this.articleHere.articleUrl is ', this.articleHere.articleUrl)
+//     console.log('-02- this.articleHere.articleUrl is ', this.articleHere.articleUrl)
    // e.g. http://nytimes.com/section/business   << No '.html' okay
     }
 
