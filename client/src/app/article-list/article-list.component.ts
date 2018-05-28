@@ -109,7 +109,7 @@ export class ArticleListComponent {
             let myChng = myChanges[myPropName];
             console.log('myPropName ', myPropName);
             console.log('myChng ', myChng);
-            
+
             let cur = JSON.stringify(myChng.currentValue);
             console.log('o la. OnChanges. CUR: ', cur)
 
@@ -132,7 +132,9 @@ export class ArticleListComponent {
     }
 
     clearAllArticlesOnClick(): void {
+        console.log('do we call me? article-list clear()')
         this.articlesHowMany = []; // re-init
+        this.titleToDisplay = ''; // ditto
     }
 
 
@@ -147,9 +149,16 @@ export class ArticleListComponent {
          - USER TYPES IN 0 or -1
          */
 
+/* aarrgghh. no more ".value"
         if (numberArticlesPassedIn.value === "" || numberArticlesPassedIn.value < 1) {
-            console.log('Invalid number of articles requested.') // TODO Flash msg or similar
-        } else {
+*/
+    /* We Now DO Allow Zero. Why? So "Clear All" Will Work.
+     if (numberArticlesPassedIn === "" || numberArticlesPassedIn < 1) {
+     */
+    if (numberArticlesPassedIn === "" || numberArticlesPassedIn < 0) {
+            console.log('Invalid number of articles requested.'); // TODO Flash msg or similar
+            console.log('getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn);
+            } else {
             console.log('getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn)
 /*
             this._myArticleService.listFirstNArticles(numberArticlesPassedIn.value)
@@ -162,6 +171,8 @@ export class ArticleListComponent {
 */
                         console.log('whatIGot.length ', whatIGot.length)
                         this.articles = whatIGot; // NEW. (Hmm, do we keep line above? or kill? hmm)
+                        // Also:
+                        this.titleToDisplay = ''; // empty it out, yes?
                     }
                 );
         }

@@ -31,14 +31,28 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
   getAllArticlesOnClick(): void {
     this._myArticleService.listArticles()
         .subscribe((whatIGot: any[]) => {
+        /*
+        New: Time to do 2 jobs.
+        Just get the # of articles to display, and that will trigger
+        (via ngOnChanges) the sending of a 2nd (kinda ridiculous)
+        re-querying of the database, to get that number ("all")
+        the records back.
+        Kinda dumb, but we are really just exercising the mechanics
+        of how to get components to communicate, etc. Cheers.
+         */
               this.articlesHowMany = whatIGot;
+              this.numberOfArticlesToGetHereInDisplayN = whatIGot.length;
             }
         );
   }
 
   clearAllArticlesOnClick(): void {
+      console.log('9999999999999 clear in Display-N')
     this.articlesHowMany = []; // re-init
       this.titleToDisplay = ''; // likewise
+
+      // Also need to clear the Child component article-list:
+      this.numberOfArticlesToGetHereInDisplayN = 0;
   }
 
 
@@ -67,8 +81,12 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
 
       if (numberArticlesPassedIn.value === "" || numberArticlesPassedIn.value < 1) {
 */
+/* We Now DO Allow Zero. Why? So "Clear All" Will Work.
       if (numberArticlesPassedIn === "" || numberArticlesPassedIn < 1) {
+*/
+      if (numberArticlesPassedIn === "" || numberArticlesPassedIn < 0) {
       console.log('Invalid number of articles requested.') // TODO Flash msg or similar
+       console.log('getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn)
     } else {
         /*
         NEW. Do two jobs: No, wrong about being wrong. O la. >> << Hmm, I think this belongs over in article-list.component.ts, not here in display-n.
@@ -97,7 +115,7 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
           G.D. parent, which yeah in turn loads the G.D. child, and the G.D. child
           gets that original (hard-coded 2) value yeah yeah.
           But that is NOT going to serve as the mechanism to pass subsequent changes. Sheesh. Yeesh.
-          TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
+ NO you were Wrong ABout That >> TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")  << NO you were Wrong ABout That
            */
           console.log('oh dear. # 2. this.numberOfArticlesToGetHereInDisplayN ', this.numberOfArticlesToGetHereInDisplayN)
 
@@ -117,7 +135,7 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
 */
 
                   /*
-                  TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
+         WRONG >>        TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
                   NO NO NO NO NO NO. See "ngOnChanges" instead. Child article-list compomnent.
                   this.myEventEmitterTellChildNewNumberArticlesToGet(numberArticlesPassedIn);
                   */

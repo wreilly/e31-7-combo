@@ -117,20 +117,46 @@ class articleService {
     /* ********************************* */
     static findFirstNArticles(howManyPassedIn) {
         var howManyPassedInAsNumberNotString = parseInt(howManyPassedIn)
-        return articleModelHereInService.find({}).limit(howManyPassedInAsNumberNotString)
-            .then(
-                (whatIGot) => {
-                    // resolved
-                    console.log('articleService whatIGot, first "n" ', whatIGot) // YES e.g. 2 or 4 articles
-                    console.log('First "n" = howMany:', howManyPassedIn) // YES  e.g. 2 or 4
-                    return whatIGot
-                },
-                (problemo) => {
-                    // rejected, unfulfilled
-                    console.log('Data Service findFirstNArticles(howMany) problemo: ', problemo)
-                }
-            )
-            .catch((err) => console.log('Data Service findFirstNArticles(howMany) CATCH err', err))
+
+        /* TERRIBLE CODING AHEAD - NON D.R.Y.
+         NEW. To support "Clear All Articles" button.
+         If zero sent, launch an impossible "find({})" that
+         will FIND NOTHING. Return results of that.
+         */
+
+        if (howManyPassedInAsNumberNotString == 0) {
+// No.             return []; // << ain't right, just empty array
+            return articleModelHereInService.find({articleTitle: 'NEVERFINDMERETURNZERO'}).limit(howManyPassedInAsNumberNotString)
+                .then(
+                    (whatIGot) => {
+                        // resolved
+                        console.log('articleService whatIGot, first "n" ', whatIGot) // YES e.g. 2 or 4 articles
+                        console.log('First "n" = howMany:', howManyPassedIn) // YES  e.g. 2 or 4
+                        return whatIGot
+                    },
+                    (problemo) => {
+                        // rejected, unfulfilled
+                        console.log('Data Service findFirstNArticles(howMany) problemo: ', problemo)
+                    }
+                )
+                .catch((err) => console.log('Data Service findFirstNArticles(howMany) CATCH err', err))
+        } else {
+            // THE REAL FIND FUNCTION
+            return articleModelHereInService.find({}).limit(howManyPassedInAsNumberNotString)
+                .then(
+                    (whatIGot) => {
+                        // resolved
+                        console.log('articleService whatIGot, first "n" ', whatIGot) // YES e.g. 2 or 4 articles
+                        console.log('First "n" = howMany:', howManyPassedIn) // YES  e.g. 2 or 4
+                        return whatIGot
+                    },
+                    (problemo) => {
+                        // rejected, unfulfilled
+                        console.log('Data Service findFirstNArticles(howMany) problemo: ', problemo)
+                    }
+                )
+                .catch((err) => console.log('Data Service findFirstNArticles(howMany) CATCH err', err))
+        }
     }
     /* WORKING RIGHT: shows (first) 2 articles
      http://0.0.0.0:8089/api/v1/articles/first-n?howMany_query=2
