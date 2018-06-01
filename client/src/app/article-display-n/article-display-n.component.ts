@@ -53,6 +53,24 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
 
       // Also need to clear the Child component article-list:
       this.numberOfArticlesToGetHereInDisplayN = 0;
+
+      /* N.B.
+      Not here but over in the .HTML
+      there is one line of code to set the "ref" (referenced)
+      widget element to hard-coded 0
+      The <input> #numberArticlesNgRef
+
+      The line of (in-line) code is:
+       <button (click)="clearAllArticlesOnClick(); numberArticlesNgRef.value = 0;"
+
+      I believe (not certain?) there is NO WAY to affect
+      that referenced element thing from here in the TypeScript.
+      AMIRITE? AMI? AMIRITE?
+      */
+      var numberArticlesInputThing = document.getElementById('numberArticles_id')
+      console.log('numberArticlesInputThing ', numberArticlesInputThing)
+    //  console.log('numberArticlesInputThing.value ', numberArticlesInputThing.value)
+
   }
 
 
@@ -119,28 +137,45 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
            */
           console.log('oh dear. # 2. this.numberOfArticlesToGetHereInDisplayN ', this.numberOfArticlesToGetHereInDisplayN)
 
+          /* ************************
+          Hah. "Unreachable Code" error. Solly!
+
+          WE JUST RETURN
+          WE ARE SKIPPING GOING TO GET ARTICLES FROM HERE IN PARENT
+          We instead will only get articles from
+          in the Child component article-list
+           */
+              // Nope! >>         return;
+          /* ************************ */
+
         // # 1.)
 /*
           this._myArticleService.listFirstNArticles(numberArticlesPassedIn.value)
 */
-          this._myArticleService.listFirstNArticles(numberArticlesPassedIn)
-          .subscribe(
-              (whatIGot: any[]) => {
-                this.articlesHowMany = whatIGot;
 
-                // Line below is NOT affecting "articles[]" on child Component article-list, of course. Yeesh.
-                  // Line below is doing NOTHING, really.
-/* fuggedaboudid
-                this.articles = whatIGot; // NEW. (Hmm, do we keep line above? or kill? hmm)
-*/
+          var shallWeRunThis = false;
+          if (shallWeRunThis) {  // Huh. Just "if(false)" --> Also "unreachable code" Sheesh.
+// ********* NO LONGER RUNNING THIS!   **********
+              this._myArticleService.listFirstNArticles(numberArticlesPassedIn)
+                  .subscribe(
+                      (whatIGot: any[]) => {
+                          this.articlesHowMany = whatIGot;
 
-                  /*
-         WRONG >>        TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
-                  NO NO NO NO NO NO. See "ngOnChanges" instead. Child article-list compomnent.
-                  this.myEventEmitterTellChildNewNumberArticlesToGet(numberArticlesPassedIn);
-                  */
-              }
-          );
+                          // Line below is NOT affecting "articles[]" on child Component article-list, of course. Yeesh.
+                          // Line below is doing NOTHING, really.
+                          /* fuggedaboudid
+                           this.articles = whatIGot; // NEW. (Hmm, do we keep line above? or kill? hmm)
+                           */
+
+                          /*
+                           WRONG >>        TIME FOR AN EVENT. EMITTER. EVENT-EMITTER. ("yay")
+                           NO NO NO NO NO NO. See "ngOnChanges" instead. Child article-list compomnent.
+                           this.myEventEmitterTellChildNewNumberArticlesToGet(numberArticlesPassedIn);
+                           */
+                      }
+                  );
+// *********************************************
+          }
     }
   }
 

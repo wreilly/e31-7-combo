@@ -88,8 +88,11 @@ export class ArticleListComponent {
             console.log("// GET SOME (Plan B) this.numberOfArticlesToGet ", this.numberOfArticlesToGet)
             // YES. the hard-coded 2 is seen here. SFSG. So Far, So Good.
 
+/*
+            LOOKS LIKE I CAN REMOVE FROM ONINIT. WILL HAPPEN WITH FIRST "CHANGE" IN NGONCHANGES. VIOLA.
             // On "Display-N" page user clicked of some number (not 0)
             this.getThisManyArticles(this.numberOfArticlesToGet)
+*/
         }
 
         this.addArticleForm = new FormGroup({
@@ -107,16 +110,34 @@ export class ArticleListComponent {
 
         for (let myPropName in myChanges) {
             let myChng = myChanges[myPropName];
-            console.log('myPropName ', myPropName);
-            console.log('myChng ', myChng);
-
-            let cur = JSON.stringify(myChng.currentValue);
-            console.log('o la. OnChanges. CUR: ', cur)
+            // console.log('myPropName ', myPropName); // numberOfArticlesToGet
+            // console.log('myChng ', myChng);
+            /*
+             SimpleChange {previousValue: undefined, currentValue: 2, firstChange: true}
+             */
 
             let prev = JSON.stringify(myChng.previousValue);
             console.log('o la. OnChanges. PREV: ', prev)
+
+            let cur = JSON.stringify(myChng.currentValue);
+            console.log('o la. OnChanges. CUR: ', cur)
         }
+/*  UPDATE. Yes (sigh), we DO want to run this line, from here,
+in ngOnChanges. This is how the parent tells the child, "run."
+
+WRONG:
+This worked, but, we don't want to *run* it, from right here, in:
+   ? ngOnChanges
+   Hmm, at least that is on initial load.
+   But later, we DO want to run it from here, for actual changes!!
+
+WRONG:
+   Instead, we run it from:
+    ? ngOnInit  ? <<< yes
+   ? the called method on the click ? <<< Hmm
+   */
         this.getThisManyArticles(this.numberOfArticlesToGet) // cur, yes ?
+
     }
 
     runDisplayTitle(articleTitlePassedIn) {

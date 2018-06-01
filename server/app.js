@@ -26,7 +26,7 @@ APP.JS
 
 APP-COMBO.JS
  $ npm run start-combo      --> node ./bin/www-combo
- $ npm run start-combo-dev  --> nodemon --inspect ./bin/www-combo
+ $ npm run start-dev-combo  --> nodemon --inspect ./bin/www-combo
 
  */
 
