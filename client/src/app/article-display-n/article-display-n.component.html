@@ -39,6 +39,10 @@
               (mousedown)="$event.preventDefault()">Get All Articles</button>
       <br />
       <br />
+      <!-- Alternative to this in-line reference, to set it to 0.
+      Instead use ViewChild over in the Component .TS
+      See https://codecraft.tv/courses/angular/forms/template-driven/#_resetting_the_form
+      -->
       <button (click)="clearAllArticlesOnClick(); numberArticlesNgRef.value = 0;" style="font-style: italic;"
               (mousedown)="$event.preventDefault()">(Clear Articles)</button>
     </div>

@@ -28,7 +28,12 @@
         <p style="font-size: small;">Pointed to API at: {{ apiUrlStubInHome }}</p>
     </div>
     <div class="column right-2">
-        <app-article-list>
+        <!-- Less Than Ideal, But ...
+         Put a '0' in this one-way data binding, to get 'ALL' articles.
+         This is the default way to invoke this Child Component.
+         (See also "Display N" page/component to see alternative use.)
+         -->
+        <app-article-list bind-numberOfArticlesToGetAlias="0">
             app-article-list here, would seem...
         </app-article-list>
 

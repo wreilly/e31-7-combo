@@ -43,9 +43,30 @@ export class ArticleListComponent {
      */
     articlesHowMany = []; // Array of Articles user requested, via button click
 
+/*
+Another parameter! (O la.)
+This "article-list" Component can have (or not), the following:
+- The "For the Article You Just Added, Here Is the Title On It, Which You Just Clicked to 'Emit'"
+(Howzabout that.)
+
+So, we have a Boolean to say Yea or Nay, Show It (*ngIf)
+- app-home = N
+- app-article-add = Y   <<<<<<< that's the one!
+- app-article-display-n = N
+
+Here again we have an @Input() which is essentially "listening" for ngOnChanges...
+(like the 'numberOfArticlesToGet' above)
+ */
+    @Input() doShowYouClickedForJustAdded: boolean = false; // default
+
 
 
     titleToDisplay: string;
+    /*
+    Above is the usual, typical "You clicked:" emit display. Okay.
+    Below is the new addition of v. similar functionality, just for the "Article You Just Added" emit. Okay02.
+     */
+    @Input('titleToDisplayInArticleListFromJustAddedArticle') titleToDisplay02: string;
 
     /* ====================================== */
     /* === CREATE ARTICLE FORM stuff .... === */
@@ -75,12 +96,20 @@ export class ArticleListComponent {
 
     ngOnInit() {
 
+        /*
+        O la.
+         https://stackoverflow.com/questions/40233440/why-is-ngoninit-not-the-first-lifecycle-hook
+         "ngOnInit() is called after ngOnChanges() was called the first time."
+         https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
+         */
+
         if (this.numberOfArticlesToGet == 0) {
             // GET ALL ("Plan A")
-            console.log("// GET ALL (Plan A) this.numberOfArticlesToGet ", this.numberOfArticlesToGet);
+            console.log("// GET ALL (Plan A) this.numberOfArticlesToGet (where 0 paradoxically means Get Em All) ", this.numberOfArticlesToGet);
             this._myArticleService.listArticles().subscribe(
                 (whatIGot: any[]) => {
                     this.articles = whatIGot;
+                    console.log('4444444 listArticles whatIGot.length ', whatIGot.length)
                 }
             );
         } else {
@@ -107,11 +136,12 @@ export class ArticleListComponent {
         // https://angular.io/guide/lifecycle-hooks#onchanges
 
         console.log('o la. OnChanges. this.numberOfArticlesToGet ', this.numberOfArticlesToGet);
+        console.log('o la. OnChanges. this.doShowYouClickedForJustAdded ', this.doShowYouClickedForJustAdded);
 
         for (let myPropName in myChanges) {
             let myChng = myChanges[myPropName];
-            // console.log('myPropName ', myPropName); // numberOfArticlesToGet
-            // console.log('myChng ', myChng);
+            console.log('myPropName ', myPropName); // numberOfArticlesToGet
+            console.log('myChng ', myChng);
             /*
              SimpleChange {previousValue: undefined, currentValue: 2, firstChange: true}
              */
@@ -136,6 +166,8 @@ WRONG:
     ? ngOnInit  ? <<< yes
    ? the called method on the click ? <<< Hmm
    */
+
+// https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html   N.B. This ngOnChanges runs FIRST (with 0)
         this.getThisManyArticles(this.numberOfArticlesToGet) // cur, yes ?
 
     }
@@ -144,19 +176,22 @@ WRONG:
         this.titleToDisplay = articleTitlePassedIn;
     }
 
+/* RE-FACTORED OUT to <app-article-add> !!
     getAllArticlesOnClick(): void {
-        this._myArticleService.listArticles()
-            .subscribe((whatIGot: any[]) => {
+        this._myArticleService.listArticles().subscribe((whatIGot: any[]) => {
                     this.articlesHowMany = whatIGot;
                 }
             );
     }
+*/
 
+/* RE-FACTORED OUT to <app-article-add> !!
     clearAllArticlesOnClick(): void {
         console.log('do we call me? article-list clear()')
         this.articlesHowMany = []; // re-init
         this.titleToDisplay = ''; // ditto
     }
+*/
 
 
     getThisManyArticles(numberArticlesPassedIn) {
@@ -190,7 +225,7 @@ WRONG:
 /* Comment Out I do believe ?
                         this.articlesHowMany = whatIGot;
 */
-                        console.log('whatIGot.length ', whatIGot.length)
+                        console.log('55555555 listFirstNArticles whatIGot.length ', whatIGot.length)
                         this.articles = whatIGot; // NEW. (Hmm, do we keep line above? or kill? hmm)
                         // Also:
                         this.titleToDisplay = ''; // empty it out, yes?

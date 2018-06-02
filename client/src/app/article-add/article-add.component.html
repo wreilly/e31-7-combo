@@ -1,15 +1,32 @@
 <strong>ARTICLE-ADD.COMPONENT</strong>
+<!-- No Longer Used. Thx.
 <div class="row" style="border-style: dashed; border-color: darkred">
   <div>You clicked:</div>
   <div style="font-size: x-large">{{titleToDisplay}}</div>
 </div>
+-->
 
 <div class="row">
   <div class="column left-2">
-    <app-article-list>
+    <!-- Less Than Ideal, But ...
+    Hmm, maybe ought not be 0. Let's see.
+    UPDATE. We used to hard-code 0 here in HTML.
+    Now we have crazy-named variable: numberOfArticlesToGetSaysParentArticleAdd (which is init at 0)
+
+ Put a '0' in this one-way data binding, to get 'ALL' articles.
+ This is the default way to invoke this Child Component.
+ (See also "Display N" page/component to see alternative use.)
+ -->
+    <!-- New: doShowYouClickedForJustAdded  < only used here on app-article-add. pass boolean param. Cheers.
+    Defaults to false; changed to true only upon "Emit" click on just-added Article
+    -->
+    <app-article-list
+            bind-numberOfArticlesToGetAlias="numberOfArticlesToGetSaysParentArticleAdd"
+            bind-titleToDisplayInArticleListFromJustAddedArticle="titleToDisplay"
+            bind-doShowYouClickedForJustAdded="doShowYouClickedForJustAddedHereInArticleAdd"
+    >
       app-article-list here, would seem...
     </app-article-list>
-
   </div>
   <div class="column right-2">
     <br />
@@ -56,16 +73,12 @@
     </div>
     <hr />
     <div  *ngIf="articleIJustCreatedBoolean" style="border-style: dotted; border-color: red">
-      <!-- Careful!  Setting this to TRUE  BREAKS STUFF.
-           (On page load there is no "just added" article, kid. Sheesh)
-          <div  *ngIf="true">
-      -->
-      <h4>Article You Just Added (hard-coded to true for the moment)</h4>
-      <!-- Commenting out for the moment. Ye gods.
+      <h4>Article You Just Added</h4>
             <app-article
                     [articleToSendDown]="articleIJustCreatedDisplay"
                     on-myEventEmitterSendTitleAlias="runDisplayTitle($event)"></app-article>
-      -->
+      <!-- Do not put '/' before static/img ... Cheers. -->
+      <img src="{{imgUrlStubInThisComponent}}static/img/{{articleIJustCreatedDisplay.articlePhotos[0]}}" width="400">
     </div>
     <hr />
   </div>

@@ -141,11 +141,11 @@ Instead, see what we're doing with "ngOnChanges()" - Whoa. In child article-list
           Hah. "Unreachable Code" error. Solly!
 
           WE JUST RETURN
-          WE ARE SKIPPING GOING TO GET ARTICLES FROM HERE IN PARENT
+          WE ARE SKIPPING GOING TO GET ARTICLES FROM HERE IN PARENT  <<< Très bien.
           We instead will only get articles from
           in the Child component article-list
            */
-              // Nope! >>         return;
+              // Nope! >>         return;  // << "unreachable code"
           /* ************************ */
 
         // # 1.)

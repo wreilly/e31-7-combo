@@ -1,7 +1,13 @@
 <strong>ARTICLE-LIST.COMPONENT</strong>
 <div class="row" style="border-style: dashed; border-color: darkred">
-    <div>You clicked:</div>
-    <div style="font-size: x-large">{{titleToDisplay}}</div>
+    <div>
+        <p>You clicked:</p>
+        <div style="font-size: x-large">{{titleToDisplay}}</div>
+    </div>
+    <div *ngIf="doShowYouClickedForJustAdded">
+        <p>(Just Added): </p>
+        <div style="font-size: x-large">{{titleToDisplay02}}</div>
+    </div>
 </div>
 
 <div class="row">
