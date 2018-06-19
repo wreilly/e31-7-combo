@@ -115,6 +115,11 @@ export class ArticleService {
   }
 
   updateArticle(idPassedIn, editedArticle) {
+    console.log('OOFFAA. More console.log debuggggging editedArticle is: ', editedArticle);
+    // Yes. articleUrl_name: "https://www.nytimes.com/2018/06/15/sports/spain-po…up.html?action=click&module=Ribbon&pgtype=Article"
+    /* Wrarticle: editedArticle:
+     {articleTitle_name: "Mueller EDIT Plans to Wrap Up Obstruction Inquiry Into Trump by Sept. 1, Giuliani Says", articleUrl_name: "https://nytimes.com/2018/05/20/us/politics/mueller-trump-obstruction-september-giuliani.html", articleCategory_name: "mycategory2"}
+     */
     return this._serviceHttp.put(apiUrlStubInService + '/' + idPassedIn, editedArticle)
   }
 

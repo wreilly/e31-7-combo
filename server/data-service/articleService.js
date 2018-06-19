@@ -49,7 +49,7 @@ Below are listings to show how each of the two controllers make their different 
  *
  * apiArticlesRouter.post('/', ...) >> apiArticleController.apiCreateArticle >> articleService.saveArticle >> articleDocumentToSaveHereInService.save()
  *
- * apiArticlesRouter.post('/:idToEditHere', ...) >> apiArticleController.apiUpdateArticle >> static updateArticle(idToUpdatePassedIn, ...) >> articleModelHereInService.update(idPassedIn, ...)
+ * apiArticlesRouter.put('/:idToEditHere', ...) >> apiArticleController.apiUpdateArticle >> static updateArticle(idToUpdatePassedIn, ...) >> articleModelHereInService.update(idPassedIn, ...)
  *
  * apiArticlesRouter.delete('/:idToDeleteHere', ...) >> apiArticleController.apiDeleteArticle >> static deleteArticle(idPassedIn) >> articleModelHereInService.findByIdAndRemove(idPassedIn...)
  *
@@ -168,6 +168,13 @@ class articleService {
     /* ********************************* */
     static updateArticle(idToUpdatePassedIn, articleDataToUpdatePassedIn) {
 
+        console.log('SUPER-DUPER-OOFFAA ******** articleDataToUpdatePassedIn ', articleDataToUpdatePassedIn)
+        /* ?
+        Why only Title field?
+         articleDataToUpdatePassedIn         {articleTitle_name: "Mueller EDIT Plans to Wrap Up Obstruction Inquiry Into Trump by Sept. 1, Giuliani Says"}
+         */
+
+
         /*  Notes:
          1. I tried this two ways:
          - UPDATE()
@@ -181,11 +188,20 @@ class articleService {
         So, I need another choice:
          http://mongoosejs.com/docs/api.html#findbyidandupdate_findByIdAndUpdate
          */
+        // NEW. Let's (what the hell) update the URL, too. hey.
+        /*
+        Huh. Did na work.
+        boo-hoo.
+        What (the h.) is URL here, anyhoo?
+         */
+        console.log('******** articleDataToUpdatePassedIn.articleUrl_name ', articleDataToUpdatePassedIn.articleUrl_name)
+        console.log('******** articleDataToUpdatePassedIn.articleTitle_name ', articleDataToUpdatePassedIn.articleTitle_name)
         return articleModelHereInService.findByIdAndUpdate(
             {_id: idToUpdatePassedIn},
             { $set:
                 {
-                   articleTitle: articleDataToUpdatePassedIn.articleTitle_name
+                   articleTitle: articleDataToUpdatePassedIn.articleTitle_name,
+                    articleUrl: articleDataToUpdatePassedIn.articleUrl_name
                  }
             },
             { new: true } // Gets you the NEW, just-edited doc (not the orig one)
@@ -211,7 +227,7 @@ class articleService {
                     Feel like I'm missing something.
                     But, this is working.
                      */
-                    /* 2018-05-02  Web "Office Hourse" with Mike Hilborn
+                    /* 2018-05-02  Web "Office Hours" with Mike Hilborn
                     Looks like all is O.K. re: the above questioning, wondering:
 
                       "@William: Underscore notation signifies an internal property of Mongoose model, similar to "_id"."
@@ -305,6 +321,7 @@ articleService.saveArticle = function(articleToSave) {
             (problemo) => {
                 // rejected
                 console.log('articleService SAVE rejected Promise from Mongoose .save() ', problemo)
+ // E.g. { ValidationError: Newarticle validation failed: articleUrl: Path `articleUrl` is required.
                 throw new Error('articleServiceSAVERejected', problemo)
             }
         )

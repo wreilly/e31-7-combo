@@ -324,6 +324,8 @@ apiArticleController.apiCreateArticle = function(req, res, next) {
             },
             (problemo) => {
                 console.log('Rejected Promise API Create Article. problemo: ', problemo)
+                // E.g., Error: articleServiceSAVERejected
+                res.send(problemo)
             }
         )
         .catch((err) => {
@@ -359,6 +361,7 @@ apiArticleController.apiUpdateArticle = function(req, res, next) {
     - Everything out in the app enroute to the database (create/save, edit/update) I use this naming convention of calling it "articleTitle_name"
      */
     articleDataToUpdate.articleTitle_name = req.body.articleTitle_name
+    articleDataToUpdate.articleUrl_name = req.body.articleUrl_name
 
     return articleDataServiceHereInApiController.updateArticle(idForUpdate, articleDataToUpdate)
         .then((whatIGot) => {

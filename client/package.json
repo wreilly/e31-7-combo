@@ -4,9 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "my-fake-comment-in-json": "this start line with host 0.0.0.0 is what makes the client app work okay from a 2nd computer on the subnet in my house e.g. 192.168.1.126:4206 hooray for that. See Also /environments/environment.ts re: apiUrlStub...",
+    "my-fake-comment-in-json": "NEW 192.168.0.125 Not 192.168.1.125     This start line with host 0.0.0.0 is what makes the client app work okay from a 2nd computer on the subnet in my house e.g. 192.168.1.126:4206 hooray for that. See Also /environments/environment.ts re: apiUrlStub...",
     "start": "ng serve --host 0.0.0.0",
-    "my-other-fake-comment-in-json": "BUILD ONLY. Not for just 'ng serve'. kitchen here means subnet in my house (kitchen). that is, my other (client) computer will see the REST API and the IMGs too, via subnet on 192.168.1.126:8089 (or .125, depending; see $ifconfig)",
+    "my-other-fake-comment-in-json": "BUILD ONLY. NEW 192.168.0.125 Not 192.168.1.125        Not for just 'ng serve'. kitchen here means subnet in my house (kitchen). that is, my other (client) computer will see the REST API and the IMGs too, via subnet on 192.168.1.126:8089 (or .125, depending; see $ifconfig)",
     "build": "ng build --prod",
     "build-kitchen": "ng build --env=kitchen",
     "build-local": "ng build",

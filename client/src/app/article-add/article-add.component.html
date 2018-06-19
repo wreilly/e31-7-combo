@@ -33,6 +33,11 @@
     <h3>2. Add a New Article</h3>
     <p>2.A. Angular REACTIVE-MODEL-DRIVEN FORM</p>
     <div style="border-color: green; border-style: dotted; padding: 10px;">
+
+<!-- ********* ORIG BACKUP **************
+
+https://scotch.io/tutorials/angular-2-form-validation#angular-2-form-validation
+
       <form [formGroup]="addArticleForm" on-ngSubmit="addArticle(null)" enctype="multipart/form-data">
         <label for="articleUrl_id">NYT URL: </label>
         <input type="text" id="articleUrl_id" name="articleUrl_name" size="40" formControlName="articleUrl_formControlName" />
@@ -48,6 +53,80 @@
                on-change="onPhotosFileChangePostFiles($event)"
                multiple>
         <button type="submit">Add Article via Reactive/Model-Driven Form</button>
+      </form>
+**************** /ORIG  ****************
+-->
+
+      <form [formGroup]="addArticleForm" on-ngSubmit="processReactiveFormAddOrEdit(null)" enctype="multipart/form-data">
+          <div class="form-group" [ngClass]="{
+          'has-error':
+          !addArticleForm.controls['articleUrl_formControlName'].valid
+          &&
+          addArticleForm.controls['articleUrl_formControlName'].touched
+          }">
+              <label for="articleUrl_id" class="control-label">NYT URL: </label>
+              <input
+                      type="text"
+                      class="form-control"
+                      id="articleUrl_id"
+                      name="articleUrl_name"
+                      size="40"
+                      formControlName="articleUrl_formControlName" />
+              <span class="help-block">span help-block Got to have NYT URL! :o)</span>
+              <div *ngIf="addArticleForm.controls['articleUrl_formControlName'].hasError('required')
+&&
+addArticleForm.controls['articleUrl_formControlName'].touched" class="alert alert-danger">Can't leave URL blank. Solly!</div>
+          </div>
+          <div class="form-group"
+          bind-ngClass="{
+          'has-error':
+          !addArticleForm.controls['articleTitle_formControlName'].valid
+          &&
+          addArticleForm.controls['articleTitle_formControlName'].touched
+          }">
+              <label for="articleTitle_id">Headline: </label>
+              <input type="text"
+                     class="form-control"
+                     id="articleTitle_id"
+                     name="articleTitle_name" size="40"
+                     formControlName="articleTitle_formControlName" />
+              <span class="help-block">Title of 15 chars pls.</span>
+
+              <!-- Cool.
+This did work: doing an 'OR' on the two error conditions:
+   (err1 || err2) && touched
+But see below for a perhaps less D.R.Y. approach (two divs),
+that has advantage of more exact user messaging...
+
+              <div *ngIf="(addArticleForm.controls['articleTitle_formControlName'].hasError('required')
+||
+addArticleForm.controls['articleTitle_formControlName'].hasError('minlength'))
+&&
+addArticleForm.controls['articleTitle_formControlName'].touched" class="alert alert-warning">Please do paste in the headline. We require 15 characters, so pile on as need be. Gracias.</div>
+-->
+
+              <div *ngIf="addArticleForm.controls['articleTitle_formControlName'].hasError('required')
+&&
+addArticleForm.controls['articleTitle_formControlName'].touched" class="alert alert-warning">Please do paste in the headline. Cain't be blank. Gracias.</div>
+              <div *ngIf="addArticleForm.controls['articleTitle_formControlName'].hasError('minlength')
+&&
+addArticleForm.controls['articleTitle_formControlName'].touched" class="alert alert-warning">We require 15 characters, so pile on as need be. Gracias.</div>
+          </div>
+          <div class="form-group">
+              <label for="articlePhotos_id">Photo(s): </label>
+              <input type="file"
+                     id="articlePhotos_id"
+                     name="articlePhotos_name"
+                     formControlName="articlePhotos_formControlName"
+                     on-change="onPhotosFileChangePostFiles($event)"
+                     multiple>
+</div>
+        <span *ngIf="editing; else adding">
+          <button type="submit" class="btn btn-primary" [disabled]="!addArticleForm.valid">UPDATE Article via Reactive/Model-Driven Form</button>
+        </span>
+        <ng-template #adding>
+          <button type="submit">ADD Article via Reactive/Model-Driven Form</button>
+        </ng-template>
       </form>
     </div>
     <hr />

@@ -19,14 +19,18 @@ export const environment = {
 // Do NOT use outside the home, off of the SubNet. App may run but API part won't work!
 // See Also note below re: PACKAGE.JSON
     /* */
-    apiUrlStubInEnvironment: 'http://192.168.1.125:8089/api/v1/articles/', // << Don't forget final '/' !
+    // NEW ROUTER! New IP #
+    apiUrlStubInEnvironment: 'http://192.168.0.125:8089/api/v1/articles/', // << Don't forget final '/' !
+    // apiUrlStubInEnvironment: 'http://192.168.1.125:8089/api/v1/articles/', // << Don't forget final '/' !
     // apiUrlStubInEnvironment: 'http://192.168.1.126:8089/api/v1/articles/', // << Don't forget final '/' !
 
 
     /*
      // NEW: Basically same stub, for <IMG SRC="" />
      */
-    imgUrlStubInEnvironment: 'http://192.168.1.125:8089/' // << Yep, final '/'
+    // NEW ROUTER! New IP #
+    imgUrlStubInEnvironment: 'http://192.168.0.125:8089/' // << Yep, final '/'
+    // imgUrlStubInEnvironment: 'http://192.168.1.125:8089/' // << Yep, final '/'
     // imgUrlStubInEnvironment: 'http://192.168.1.126:8089/' // << Yep, final '/'
 
 }

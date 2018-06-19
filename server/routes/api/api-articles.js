@@ -399,7 +399,14 @@ apiArticlesRouter.post(
 /* ************************************************** */
 /* ******** PUT '/api/v1/articles/:idToEditHere'  ************ */
 /* ************************************************** */
-apiArticlesRouter.put('/:idToEditHere', function (req, res, next) {
+apiArticlesRouter.put(
+    '/:idToEditHere',
+    /* As in POST / above ... also here at PUT/:id
+     We here use a Middleware, to simply trim the NYTimes URL
+     */
+    middlewareTrimHere.myMiddlewareTrimUrl,
+
+    function (req, res, next) {
 
     apiArticleControllerHereInApi.apiUpdateArticle(req, res, next)
     // We'll get the _id off the URI params over in the Controller (FAT) not here in the Router (SKINNY)

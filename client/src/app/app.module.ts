@@ -27,9 +27,10 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'articles/add', component: ArticleAddComponent },
   { path: 'articles/displayn', component: ArticleDisplayNComponent },
-  { path: 'articles/:article_id', component: ArticleDetailComponent }
-/* TODO Next up ...
-  { path: 'articles/:article_id/edit', component: ArticleEditComponent },
+  { path: 'articles/:article_id', component: ArticleDetailComponent },
+  { path: 'articles/:article_id/edit', component: ArticleAddComponent }
+/* TODO Next up ... << Actually, no. "Plan A" is to (re)-use ArticleAddComponent for both ADD and for EDIT. Cheers
+  { path: 'articles/:article_id/edit', component: ArticleEditComponent }, << NO, hoping to NOT make a separate "Article*Edit*Component. We shall see.
 */
 ];
 /* NEW. Article Detail Page URL is CHANGING.

@@ -15,8 +15,46 @@
         <p class="tiny">{{theArticleHereInDetailPage.articleUrl}}
         </p>
         <p class="tiny">{{theArticleHereInDetailPage._id}}</p>
+
+        <!--
+        https://alligator.io/angular/navigation-routerlink-navigate-navigatebyurl/
+        routerLink is RELATIVE
+        So we are ALREADY on, e.g.
+        http://0.0.0.0:4206/articles/whats-good-for-pharma-isnt-good-for-america-wonkish--aid--5af83649f2fffa14c4a22cd7
+        So by simply adding "edit" here we of course get:
+        http://0.0.0.0:4206/articles/whats-good-for-pharma-isnt-good-for-america-wonkish--aid--5af83649f2fffa14c4a22cd7/edit
+        Viola.
+        -->
+        <!-- HEY. Also consider: ROUTER.NAVIGATE() etc.
+        (From Udemy Max S. course LESSON 154, on "Recipes" etc.)
+
+    // ALSO e.g. https://localhost:4206/recipes/2/edit
+       this.myRecipeDetailRouter.navigate(['../', this.idIndexThisTime, 'edit'], {relativeTo: this.myRecipeDetailActivatedRoute})
+
+        -->
+
+        <a routerLink="edit" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">NEW Edit Nav Router Link to article-add in Edit Mode (God Willing)</a>
+        
+        <button>NEW Edit Nav Link as button? not yet</button>
         <button (click)="letUsEdit()">Let's Edit (or Delete!)</button>
     </div>
+
+
+
+
+
+
+
+    <!-- ******* NOT EDITING, ABOVE ***************** -->
+    <!-- ******************************************** -->
+    <!-- ********** EDITING, BELOW ****************** -->
+
+
+
+
+
+
+
     <div *ngIf="editing">
         <h3>Article EDIT or DELETE Page</h3>
 
@@ -57,12 +95,12 @@ https://blog.thoughtram.io/angular/2016/03/21/template-driven-forms-in-angular-2
             <p>Edit the Headline: <input
                     type="text"
                     ref-articleTitle_ref
-                    id="articleTitle_id"
+                    id="articleTitle_id_template"
                     name="articleTitle_name"
                     size="60"
                     bind-ngModel="theArticleHereInDetailPage.articleTitle"
                     on-input="theArticleHereInDetailPage.articleTitle = $event.target.value"
-            />
+            /> <!-- That "reference" not used, not really needed. ref-articleTitle_ref -->
             </p>
 
             <p>New York Times - article URL: {{theArticleHereInDetailPage.articleUrl}}
@@ -91,13 +129,19 @@ So, THIS METHOD "letUsSaveReactive" is NO LONGER BEING USED. Cheers.
                 <p>Edit the Headline:
                 <input
                         type="text"
-                        id="articleTitle_id"
+                        id="articleTitle_id_reactive"
                         name="articleTitle_name"
                         size="60"
                         formControlName="articleTitle_formControlName"
+                >
+                    <!-- Hmm. In REACTIVE Form, is any [(ngModel)] biz REDUNDANT ??
+                    Seems to be. Okay.
+                    https://stackoverflow.com/questions/45366955/same-form-for-creating-and-editing-data-angular4
+
+                    Commented Out, still works. Bon.
                         bind-ngModel="theArticleHereInDetailPage.articleTitle"
                         on-input="theArticleHereInDetailPage.articleTitle = $event.target.value"
-                >
+                    -->
                 </p>
       <!-- Yes, works:  [(ngModel)]="theArticleHereInDetailPage.articleTitle" -->
                 <p>New York Times - article URL: {{theArticleHereInDetailPage.articleUrl}}

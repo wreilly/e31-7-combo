@@ -166,7 +166,7 @@ export class ArticleDetailComponent {
 
                             /*
                             Let's transform the Photo File Names:
-                            - In the database they are JSON.stringify()
+                      1      - In the database they are JSON.stringify()
                             - Now time to JSON.parse()
                              */
                             this.theArticlePhotosArrayHereInDetailPage = JSON.parse(articleIGot.articlePhotos)
@@ -242,6 +242,14 @@ export class ArticleDetailComponent {
         //      (Had we used simply 'submit', we'd have had to do the preventDefault() here.)
 
         console.log('edit/update time - whatIsPassedIn ', whatIsPassedIn);
+        /* YES.
+        So, the ".value" of the <form> is (apparently), an object with:
+        - 1. the *NAME* attribute on each INPUT element
+            (Contrast with "Reactive-Model-Driven Form, where it is the *FORMCONTROLNAME* attribute; see below at letUsSaveReactiveNoParam())
+        - 2. the String value in that INPUT element
+
+         whatIsPassedIn  {articleTitle_name: "Trump’s HONESTLY REALLY CRAZY VERY INEFFICIENT Fuel Efficiency Rollbacks Will Hurt Drivers"}
+         */
 
         console.log('this.theArticleHereInDetailPage.articleTitle ', this.theArticleHereInDetailPage.articleTitle ); // Yes. Edited title.
 
@@ -285,6 +293,9 @@ So, THIS METHOD is NOT BEING CALLED. Cheers.
          */
         console.log('this.myArticleEditFormGroup.value is ', this.myArticleEditFormGroup.value)
         /* Yes:
+
+
+
               { articleTitle_formControlName: "Foosball I typed into empty input box. Cheers." }
          */
 
@@ -430,7 +441,17 @@ B). Or, since the form information is *already here* in the component .TS, you c
 
         console.log('REACTIVE NO PARAM - this.myArticleEditFormGroup.value is ', this.myArticleEditFormGroup.value)
         /* Yes:
-         REACTIVE NO PARAM - this.myArticleEditFormGroup.value is  {articleTitle_formControlName: "Reactd REACT EDIT NO PARAM 01"}
+         REACTIVE NO PARAM - this.myArticleEditFormGroup.value is:
+
+So, like we saw in the Template-Driven Form "letUsSaveTemplate()" above:
+         the ".value" of the <form>, here being in a "formGroup," is (apparently), an object with:
+         - 1. the *FORMCONTROLNAME* attribute on each INPUT element
+                (whereas on Template-driven it was simply "NAME" attribute)
+         - 2. the String value in that INPUT element
+         Okay.
+
+E.g.,
+         {articleTitle_formControlName: "Reactd REACT EDIT NO PARAM 01"}
          */
 
         /* All right. Time to now actually DO something.

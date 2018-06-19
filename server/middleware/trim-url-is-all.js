@@ -26,6 +26,64 @@ middlewareModule.myMiddlewareTrimUrl = function(req, res, next) {
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
 //
 
+/* CONSOLE showing me how null is typeof "object". O.K. Didn't know that.
+
+ var i = 9
+
+ i
+ 9
+
+ var j = null
+
+ j
+ null
+
+ typeof(j)
+ "object"
+
+ typeof(i)
+ "number"
+
+ typeof(j) === "null"
+ false
+
+ typeof(j) === "object"
+ true
+
+ typeof(null)
+ "object"
+
+ typeof(i) === "object"
+ false
+ */
+    // FALSE, It ain't null. hmmph.
+    if (typeof req.body.articleUrl_name === 'object' ) {
+    // if (typeof req.body.articleUrl_name === 'null' ) {
+    // if (typeof req.body.articleUrl_name === null ) {
+
+        console.log('Holy Crap. This is TRUE! typeof req.body.articleUrl_name === "object" ')
+    } else {
+        console.log('what the hay. This is fALSE typeof req.body.articleUrl_name === "object" ')  // << Yep.
+    }
+
+    // TRUE. It most assuredly *IS* typeof string. harrumph.
+    /* I guess that whole "form-data" thing cannot send a null down intact.
+     Turns it into a string. Makes sense I suppose o well.
+
+     ------WebKitFormBoundaryi3iDeOfutai6C0HL
+     Content-Disposition: form-data; name="articleUrl_name"
+
+     null
+
+     Very Inconclusive S.O. post on same issue:
+     https://stackoverflow.com/questions/39927284/object-propertys-null-value-converted-to-null-string
+     */
+    if (typeof req.body.articleUrl_name === 'string' ) {
+        console.log('Holy Crap. This is TRUE! typeof req.body.articleUrl_name === "string" ') // << Yep.
+    } else {
+        console.log('what the hay. This is fALSE typeof req.body.articleUrl_name === "string" ')
+    }
+
     console.log('PRE-REGEX! req.body.articleUrl_name as passed in was: ', req.body.articleUrl_name)
     // Wherefore the 'bang' ! ?
 /* Yah. That G.D. bang was messing it up. How did it get there ??? O la.
