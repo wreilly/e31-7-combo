@@ -13,6 +13,8 @@ var articleDataServiceHereInApiController = require('../../data-service/articleS
  *
  * apiArticlesRouter.get('/', ...) >> apiArticleController.apiGetAllArticles
  *
+ * apiArticlesRouter.post('/articleimages'...) >> apiArticleController.apiUploadedArticleImagesNowDoNothing
+ *
  * apiArticlesRouter.post('/', ...) >> apiArticleController.apiCreateArticle
  *
  * apiArticlesRouter.put('/:idToEditHere', ...) >> apiArticleController.apiUpdateArticle

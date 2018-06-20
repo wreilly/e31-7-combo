@@ -169,7 +169,11 @@ class articleService {
     static updateArticle(idToUpdatePassedIn, articleDataToUpdatePassedIn) {
 
         console.log('SUPER-DUPER-OOFFAA ******** articleDataToUpdatePassedIn ', articleDataToUpdatePassedIn)
-        /* ?
+        /* UPDATE: I see Title and URL ... Now time to add the Photos Filenames Array. :o)
+         {articleTitle_name: "Trump’s WAYZO Gots to go 3345 Twice BAZZARRO  We L…CIENT Fuel Efficiency Rollbacks Will Hurt Drivers", articleUrl_name: "https://www.nytimes.com/2018/05/11/opinion/trump-fuel-efficiency-rollbacks.html"}
+
+
+        ?
         Why only Title field?
          articleDataToUpdatePassedIn         {articleTitle_name: "Mueller EDIT Plans to Wrap Up Obstruction Inquiry Into Trump by Sept. 1, Giuliani Says"}
          */

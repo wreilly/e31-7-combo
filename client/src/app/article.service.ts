@@ -19,6 +19,8 @@ export class ArticleService {
 
    createArticle(article)
 
+   uploadArticleImages(myFormDataFilesHere)
+
    updateArticle(id, article)
 
    deleteArticle(id)

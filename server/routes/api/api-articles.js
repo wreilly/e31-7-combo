@@ -38,6 +38,8 @@ apiArticlesRouter.use((req, res, next) => {
  *
  * apiArticlesRouter.get('/', ...)
  *
+ * apiArticlesRouter.POST '/api/v1/articles/articleimages'
+ *
  * apiArticlesRouter.post('/', ...)
  *
  * apiArticlesRouter.put('/:idToEditHere', ...)

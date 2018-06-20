@@ -265,11 +265,32 @@ export class ArticleAddComponent {
                              - Now time to JSON.parse()
                              */
                             this.theArticlePhotosArrayHereInDetailPage = JSON.parse(articleIGot.articlePhotos)
-                            console.log('this.theArticlePhotosArrayHereInDetailPage ', this.theArticlePhotosArrayHereInDetailPage);
+                            console.log('88888888888888 this.theArticlePhotosArrayHereInDetailPage ', this.theArticlePhotosArrayHereInDetailPage);
                             /*
                              Yes
                              ["sometimes__1525988911510_010006-MexAmerican.jpg", "sometimes__1525988911513_AndToThinkWeAllPlayedASma…t-NewYorkerCartoon-SlackScreenshot-2017-11-14.jpg"]
                              */
+
+                            // 20180620-0621
+                            // Patch Photos (Array) Back Onto That Picture Picker Input Thing-A-Ding-A ??? ???
+                            // Q. gonna work? wu nos
+                            // A. no! (security thing)
+                            /*Read 'em & weep:
+                            "ERROR DOMException: Failed to set the 'value' property on 'HTMLInputElement': This input element accepts a filename, which may only be programmatically set to the empty string.
+                             at EmulatedEncapsulationDomRenderer2.DefaultDomRenderer2.setProperty ..."
+                             */
+                            /* CONCLUSION:
+                            1) NOT going to (re)-display the already uploaded file(s), in the "Choose File(s)" input. (Can't.)
+                            2) MAYBE (later) will display those photos just as: a) text: image filenames, b) viewable pictures: img href etc.
+                            3) MAYBE (later later) will make those deleteable (checkbox etc.) - (later later later)
+                            4) FOR NOW - User can just ADD another file(s). Recall: our max is (v. arbitrarily) 3. Mebbe should up to say 4. whoa.
+                             */
+/* YA CAIN'T DO THIS, KID:
+                            this.addArticleForm.patchValue({
+                                articlePhotos_formControlName: this.theArticlePhotosArrayHereInDetailPage
+                            })
+*/
+
                         },
                         (error) => {
                             // error
@@ -375,6 +396,35 @@ export class ArticleAddComponent {
                         this.photosRenamedFilenamesArray.push(eventBack.allreqfiles[i].filename);
                     }
                     console.log('Renamed Photo Filenames: this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray);
+
+                    /* NEW 20180620-1321
+                    ABILITY TO ADD PHOTO(s) ON EDIT PAGE
+                     this.theArticleHereInDetailPage.articlePhotos
+                     is (more or less) an array with one string in it
+                     That string is, in a sense, an "array" of "strings"
+                     o la
+                     "['stringone','stringtwo']"
+                     */
+                    var tempArticlePhotosStringParsedToArrayIThink;
+                    tempArticlePhotosStringParsedToArrayIThink = JSON.parse(this.theArticleHereInDetailPage.articlePhotos)
+                    // Yes! gets nice little array
+                    // Time to concat the existing file(s) to the newly added file(s)
+                    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
+                    var tempAllArticlePhotosToUpdateDatabaseArray;
+                    tempAllArticlePhotosToUpdateDatabaseArray = tempArticlePhotosStringParsedToArrayIThink.concat(this.photosRenamedFilenamesArray)
+                    // Yes! now we have ALL photo filenames in this little array
+                    /*
+                    So now we CLOBBER the this.photosRenamedFilenamesArray
+                    so as to (re)-use it,
+                    in the "prepareToAddArticleReactiveForm()"
+                    as we now "add" (update, really) our Article
+                    with ALL photos filenames:
+                    - those we had before
+                    - those we just got from Edit upload of (Additional) photos
+                     */
+                    this.photosRenamedFilenamesArray = tempAllArticlePhotosToUpdateDatabaseArray;
+                    // Array clobber just replaces yes? no confounding "by refernece" nonsense and all, yah? right? yeesh.
+
                 },
 
                 (error) => {
@@ -618,7 +668,7 @@ Wrarticle         {articleTitle_name: "REDITEDeactive Photos ngModel 1", article
                     console.log('04 we just ran resetBothForms for UPDATE this.addArticleForm.value ', this.addArticleForm.value)
                     this.editing = false; // we're done!  don't still be editing for reload!
                     // location.reload() // << dummkoppf. We do NOT want to go back to /id/edit. No. Just /id
-                    // TODO navigate to article id thing 20180615-0639
+                    // TODONE navigate to article id thing 20180615-0639
 /*
                     this._myRouter.navigate([`/articles/${this.theArticleIdHereInDetailPage}`])
                     // e.g. http://0.0.0.0:4206/articles/5afac7603fa7e949fa00a64e
