@@ -249,6 +249,16 @@ export class ArticleAddComponent {
                             // data...
                             this.theArticleHereInDetailPage = articleIGot;
                             console.log('subscribe : this.theArticleHereInDetailPage ', this.theArticleHereInDetailPage) // Yes: the object {} from MongoDB
+
+                            /* 20180627-0727
+                             EDITING
+                             {articlePhotos: Array(1), _id: "5b3362d7a1284d055d2c4d6c", articleUrl: "https://www.nytimes.com/2018/06/26/nyregion/joseph-crowley-ocasio-cortez-democratic-primary.html", articleTitle: "Alexandria Ocasio-Cortez Defeats Joseph Crowley in Major Democratic House Upset", __v: 0}
+                             articlePhotos:
+                             ["["sometimes__1530093587619_27crowley1-superJumbo.j…__1530093587642_27crowley3NEW-superJumbo-v4.jpg"]"]
+                             */
+
+
+
                             // Fill in that REACTIVE editable Form, too!
                             /*  USED TO BE CALLED (when in article-detail)
                              this.myArticleEditFormGroup.patchValue({
@@ -265,8 +275,11 @@ export class ArticleAddComponent {
                              - Now time to JSON.parse()
                              */
                             this.theArticlePhotosArrayHereInDetailPage = JSON.parse(articleIGot.articlePhotos)
-                            console.log('88888888888888 this.theArticlePhotosArrayHereInDetailPage ', this.theArticlePhotosArrayHereInDetailPage);
-                            /*
+                            console.log('88888888888888 AFTER JSON.PARSE this.theArticlePhotosArrayHereInDetailPage ', this.theArticlePhotosArrayHereInDetailPage);
+                            /* Yes. EDITING. 20180627-0729
+
+                             ["sometimes__1530093587619_27crowley1-superJumbo.jpg", "sometimes__1530093587642_27crowley3NEW-superJumbo-v4.jpg"]
+
                              Yes
                              ["sometimes__1525988911510_010006-MexAmerican.jpg", "sometimes__1525988911513_AndToThinkWeAllPlayedASma…t-NewYorkerCartoon-SlackScreenshot-2017-11-14.jpg"]
                              */
@@ -339,6 +352,33 @@ export class ArticleAddComponent {
 
         var myFiles = eventPassedIn.target.files;
         console.log('onPhotosFileChangePostFiles myFiles ', myFiles)
+        /*
+         FileList {0: File(328571), 1: File(914778), length: 2}
+         0
+         :
+         File(328571) {name: "27crowley1-superJumbo.jpg", lastModified: 1530093389338, lastModifiedDate: Wed Jun 27 2018 05:56:29 GMT-0400 (Eastern Daylight Time), webkitRelativePath: "", size: 328571, …}
+         1
+         :
+         File(914778)
+         lastModified
+         :
+         1530093353566
+         lastModifiedDate
+         :
+         Wed Jun 27 2018 05:55:53 GMT-0400 (Eastern Daylight Time) {}
+         name
+         :
+         "27crowley3NEW-superJumbo-v4.jpg"
+         size
+         :
+         914778
+         type
+         :
+         "image/jpeg"
+         webkitRelativePath
+         :
+         ""
+         */
 
         this.myServiceFilesUpload(myFiles)
         /* MULTER & Beyond...
@@ -395,7 +435,35 @@ export class ArticleAddComponent {
                         console.log(eventBack.allreqfiles[i].filename);
                         this.photosRenamedFilenamesArray.push(eventBack.allreqfiles[i].filename);
                     }
-                    console.log('Renamed Photo Filenames: this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray);
+                    console.log('JUST-UPLOADED, be that initial CREATE or eventual UPDATE. Renamed Photo Filenames: this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray);
+                    /* YES
+                     JUST-UPLOADED, be that initial CREATE or eventual UPDATE. Renamed Photo Filenames: this.photosRenamedFilenamesArray  ["sometimes__1529922716438_01chinatitans-3-jumbo.jpg"]
+                     */
+
+
+                    /* 20180625-1515
+                    If NOT editing (if ADDING/CREATING), then "theArticleHereInDetailPage" is NOT defined etc. ERROR. So, we if() it.
+                    THE REST OF THIS METHOD IS ALL ABOUT "EDITING" - No "Add".
+                    ***************************************
+                     */
+                    if (this.editing) {
+
+                        console.log('000a EXISTING, OLD this.theArticleHereInDetailPage ', this.theArticleHereInDetailPage)
+                        console.log('000 EXISTING, OLD this.theArticleHereInDetailPage.articlePhotos ', this.theArticleHereInDetailPage.articlePhotos)
+                        /*
+                         ["["sometimes__1526546868758_636348446001047963-IMG-…_857f43ba-d349-445c-a9f9-8a4adb54a012-jumbo.jpg"]"]
+                         */
+                        console.log('001 EXISTING, OLD, PARSED tempArticlePhotosStringParsedToArrayIThink ', tempArticlePhotosStringParsedToArrayIThink)
+                        /*
+                         undefined    :o(
+                         It does work - but (it isn't defined till below!!) d'oh
+                         */
+
+
+                    console.log('002 NEW this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray)
+                    /*
+                     ["sometimes__1529946401051_01chinatitans-3-jumbo.jpg"]
+                     */
 
                     /* NEW 20180620-1321
                     ABILITY TO ADD PHOTO(s) ON EDIT PAGE
@@ -408,11 +476,61 @@ export class ArticleAddComponent {
                     var tempArticlePhotosStringParsedToArrayIThink;
                     tempArticlePhotosStringParsedToArrayIThink = JSON.parse(this.theArticleHereInDetailPage.articlePhotos)
                     // Yes! gets nice little array
+                    /* 20180624-0704
+
+
+                    A. IF UPDATING:
+                    - 1. Existing, "old", originally with CREATE:
+                    -- this.theArticleHereInDetailPage.articlePhotos
+                    - 2. New, now added with UPDATE:
+                    -- this.photosRenamedFilenamesArray
+
+                     B. IF CREATING:
+                     - N/A : 1. Existing, "old", originally with CREATE:
+                     -- this.theArticleHereInDetailPage.articlePhotos
+                     -- would therefore be empty ? null? non-problematic? TODO = find out
+                     - 2. New, now being added with CREATE:
+                     -- this.photosRenamedFilenamesArray
+                     */
+
+                    console.log('EXISTING, OLD this.theArticleHereInDetailPage.articlePhotos ', this.theArticleHereInDetailPage.articlePhotos)
+                    /* Yes: Array, of one string. (which itself is an array of strings)
+                     OLD, ORIGINAL PHOTO FILENAME(S)
+                     ["["sometimes__1527074634847_13alexander-articleLarge.jpg"]"]
+                     */
+
+                    console.log('EXISTING, OLD, PARSED tempArticlePhotosStringParsedToArrayIThink ', tempArticlePhotosStringParsedToArrayIThink)
+                    /* Yes: Array of strings.
+                     Again, OLD, ORIGINAL PHOTO FILENAME(S)
+                    ["sometimes__1527074634847_13alexander-articleLarge.jpg"]
+
+                     e.g.
+                     ["sometimes__1526546868758_636348446001047963-IMG-8038.JPG", "sometimes__1526546868759_merlin_137328849_857f43ba-d349-445c-a9f9-8a4adb54a012-jumbo.jpg"]
+                     */
+
+                    console.log('NEW this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray)
+                    /* Yes: Array of strings.
+                    NEW, JUST-ADDED PHOTO FILENAME(S)
+                     ["sometimes__1529925255575_23TB-ICEMAN2-videoLarge.jpg"]
+                     */
+
+
                     // Time to concat the existing file(s) to the newly added file(s)
                     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
                     var tempAllArticlePhotosToUpdateDatabaseArray;
                     tempAllArticlePhotosToUpdateDatabaseArray = tempArticlePhotosStringParsedToArrayIThink.concat(this.photosRenamedFilenamesArray)
                     // Yes! now we have ALL photo filenames in this little array
+                    console.log('CONCAT of BOTH: EXISTING + NEW tempAllArticlePhotosToUpdateDatabaseArray ', tempAllArticlePhotosToUpdateDatabaseArray)
+                    /* Yes. Array of strings.
+                     ["sometimes__1527074634847_13alexander-articleLarge.jpg", "sometimes__1529925255575_23TB-ICEMAN2-videoLarge.jpg"]
+
+                    e.g.
+                     ["sometimes__1526546868758_636348446001047963-IMG-8038.JPG", "sometimes__1526546868759_merlin_137328849_857f43ba-d349-445c-a9f9-8a4adb54a012-jumbo.jpg", "sometimes__1529946401051_01chinatitans-3-jumbo.jpg"]
+                     */
+
+
+
+
                     /*
                     So now we CLOBBER the this.photosRenamedFilenamesArray
                     so as to (re)-use it,
@@ -423,7 +541,34 @@ export class ArticleAddComponent {
                     - those we just got from Edit upload of (Additional) photos
                      */
                     this.photosRenamedFilenamesArray = tempAllArticlePhotosToUpdateDatabaseArray;
-                    // Array clobber just replaces yes? no confounding "by refernece" nonsense and all, yah? right? yeesh.
+                    // Q. Array clobber just replaces yes?
+                    // Q. No confounding "by reference" nonsense and all, yah? right? yeesh.
+                    // A. RIGHT. No nonsense. "Just works." Bon.
+                    console.log('CLOBBER CONCAT onto this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray)
+                    /* Yes.  Array of strings.
+                     ["sometimes__1527074634847_13alexander-articleLarge.jpg", "sometimes__1529925255575_23TB-ICEMAN2-videoLarge.jpg"]
+                     */
+
+                    /*
+                    Hmm. Very pretty array and all that.
+                    But NOT GOOD ENOUGH, YET
+
+                    1) Here is how it looks IN THE DATABASE:
+
+                     "articlePhotos" : [ "sometimes__1526546868758_636348446001047963-IMG-8038.JPG", "sometimes__1526546868759_merlin_137328849_857f43ba-d349-445c-a9f9-8a4adb54a012-jumbo.jpg", "sometimes__1529946401051_01chinatitans-3-jumbo.jpg" ]
+
+
+                     PRIMARY> db.newarticles.find({_id: ObjectId("5afd42368d01417b61af44d8")})
+                     { "_id" : ObjectId("5afd42368d01417b61af44d8"), "articlePhotos" : [ "sometimes__1526546868758_636348446001047963-IMG-8038.JPG", "sometimes__1526546868759_merlin_137328849_857f43ba-d349-445c-a9f9-8a4adb54a012-jumbo.jpg", "sometimes__1529946401051_01chinatitans-3-jumbo.jpg" ], "articleUrl" : "https://nytimes.com/2018/06/15/sports/spain-portugal-world-cup.html", "articleTitle" : "Editable Heyhey 22 NYT RO23 This is Excellent, most excellent Walked for His Right to Vote. Now He’s Running for Office. RO2", "__v" : 0 }
+
+                     2) Here is an example of how it SHOULD LOOK:
+                     "articlePhotos" : [ "[\"sometimes__1527881479973_11bledsoe-superJumbo.jpg\",\"sometimes__1527881479980_merlin_136696233_fbde38d7-df32-4801-9c88-c9111e7084d7-jumbo.jpg\"]" ],
+
+
+                     */
+
+                    // ***************************************************
+                    } // /if(editing)
 
                 },
 
@@ -453,18 +598,61 @@ export class ArticleAddComponent {
         return this.myFormFieldsData;
     } // /prepareToAddArticleTemplateForm()
 
+
+
     private prepareToAddArticleReactiveForm(): any {
         // NON-D.R.Y.  (TODO)
-        // Now a component property, not just a variable declared within this method
+        // Now a component property (up above), not just a variable declared within this method
         // ---- let myFormFieldsData = new FormData();
 
+        /* *** N.B. Don't forget: this "FormGroup" / FormData thing
+        is *NOT* super friendly with the 'console.log()' to see
+        what it holds.
+        Below we see that some logging yields null, others not. Odd. o well.
+         */
+
         console.log('-01B- this.addArticleForm ', this.addArticleForm); // FormGroup
+        /* Hmm.
+        null logging, but these formControls do have stuff o well...
+
+      FormGroup.value         :
+         articlePhotos_formControlName         :
+         null
+         articleTitle_formControlName         :
+         null
+         articleUrl_formControlName         :
+         null
+         */
+
         console.log('-01B-A- this.addArticleForm.controls ', this.addArticleForm.controls);
-        /* Hmm. Was showing RED ...
+        /* Kinda Useless Logging:
+
+         {articleUrl_formControlName: FormControl, articleTitle_formControlName: FormControl, articlePhotos_formControlName: FormControl}
+         */
+
+        /* Hmm. Was showing RED in IDE ...
          console.log('-01B-B- this.addArticleForm.controls.articleTitle_formControlName.value ', this.addArticleForm.controls.articleTitle_formControlName.value); // Yes what's in input box
          */
         console.log('-01B-Baaa- this.addArticleForm.controls[\'articleTitle_formControlName\'].value ', this.addArticleForm.controls['articleTitle_formControlName'].value); // Yes what's in input box
+
         console.log('-01B-Caaa- this.addArticleForm.controls[\'articleUrl_formControlName\'].value ', this.addArticleForm.controls['articleUrl_formControlName'].value); // Yes what's in input box
+
+
+        // 20180624-0658
+        console.log('-01B-Daaa- this.addArticleForm.controls[\'articlePhotos_formControlName\'].value ', this.addArticleForm.controls['articlePhotos_formControlName'].value); // Yes what's in input box!
+        /*
+         20180627-0615
+         Hmm. same result.
+         As noted before, for whatever reason this console.log() of
+         "articlePhotos" (plural) shows me only one, even though I have two.
+         Seems to not be a problem (j'espere)
+         articlePhotos_formControlName:
+         "C:\fakepath\27crowley1-superJumbo.jpg"
+
+        Another run, earlier:
+         C:\fakepath\051218krugman3-superJumbo.png
+         */
+
 
         // (1) .controls.field << YEP, syntax WORKS.
         /* Interesting.
@@ -484,12 +672,53 @@ export class ArticleAddComponent {
         // (3) .get('field') << YEP, syntax ALSO WORKS.
 
         // https://stackoverflow.com/questions/16104078/appending-array-to-formdata-and-send-via-ajax
+        console.log('******* 01 BEFORE this.photosRenamedFilenamesArray ', this.photosRenamedFilenamesArray)
+        /*  Seems to NOT NEED JSON.stringify ?? ??....
+
+         ******* 01 this.photosRenamedFilenamesArray
+         * (2) ["sometimes__1527074436227_13alexander-articleLarge.jpg", "sometimes__1529764939636_10carter-jumbo.jpg"]
+         0         :
+         "sometimes__1527074436227_13alexander-articleLarge.jpg"
+         1
+         :         "sometimes__1529764939636_10carter-jumbo.jpg"
+         */
+
+        /* 20180627-1250
+        God damn it. what the hay is this.
+         JSON.stringify(this.photosRenamedFilenamesArray)
+         */
+        var whatTheHay = JSON.stringify(this.photosRenamedFilenamesArray);
+        console.log('whatTheHay JSON.stringify(this.photosRenamedFilenamesArray) ', whatTheHay)
+
         this.myFormFieldsData.append('articlePhotos_name', JSON.stringify(this.photosRenamedFilenamesArray)) // SAME as on Template Form (fwiw)
+
+        console.log('******* 02 AFTER JSON.stringified... this.photosRenamedFilenamesArray ', JSON.stringify(this.photosRenamedFilenamesArray))
+        /*
+         ******* 02 JSON.stringified... this.photosRenamedFilenamesArray  ["sometimes__1527074436227_13alexander-articleLarge.jpg","sometimes__1529764939636_10carter-jumbo.jpg"]
+         */
 
         /* Worked fine. See browser DevTools Network "Request Payload" */
         var myxhr = new XMLHttpRequest;
         myxhr.open('POST', '/REACTIVE-FORM', true);
         myxhr.send(this.myFormFieldsData);
+
+        /* YES. 20180623-0656
+        Adding new photo, via EDIT. We do have photo array with BOTH old and new. Good.
+         ------WebKitFormBoundaryCP0WHt6OdYil7wnP
+         Content-Disposition: form-data; name="articleUrl_name"
+
+         https://www.nytimes.com/2018/05/21/opinion/trump-investigation-russia-surveillance.html
+         ------WebKitFormBoundaryCP0WHt6OdYil7wnP
+         Content-Disposition: form-data; name="articleTitle_name"
+
+         Trump Ye Olde Edite 2 v. the Department of Justice
+         ------WebKitFormBoundaryCP0WHt6OdYil7wnP
+         Content-Disposition: form-data; name="articlePhotos_name"
+
+         ["sometimes__1526986681996_15Mideast-Visual1-superJumbo-v3.jpg","sometimes__1529751130601_09dc-Autos-1-jumbo.jpg"]
+         ------WebKitFormBoundaryCP0WHt6OdYil7wnP--
+
+         */
 
         return this.myFormFieldsData;
     } // /prepareToAddArticleReactiveForm()
@@ -514,6 +743,19 @@ export class ArticleAddComponent {
         } else {
             // REACTIVE-MODEL-DRIVEN
             console.log('we are in addArticle - this.addArticleForm.value (REACT only) ', this.addArticleForm.value);
+
+            /* 20180627-0615
+            Hmm. same result. for whatever reason this console.log() of
+            "articlePhotos" (plural) shows me only one, even though I have two.
+            Seems to not be a problem (j'espere)
+             articlePhotos_formControlName:
+             "C:\fakepath\27crowley1-superJumbo.jpg"
+
+            20180624-0634
+             articlePhotos_formControlName:
+             "C:\fakepath\10carter-jumbo.jpg"
+             */
+
             myFormFieldsAndFiles = this.prepareToAddArticleReactiveForm();
         }
 
@@ -527,6 +769,10 @@ export class ArticleAddComponent {
         var myxhr3 = new XMLHttpRequest;
         myxhr3.open('POST', '/myFormFieldsAndFiles', true);
         myxhr3.send(myFormFieldsAndFiles);
+        /* 20180623-0705 Yes.
+        Like /REACTIVE-FORM above, we here DO have BOTH old and  new photo filenames.
+        Good.
+         */
         /* 20180519-0550  Working fine. Just array of photo file *names*. Not photo *files*.
          ------WebKitFormBoundaryorWxAADqBUZELoEz
          Content-Disposition: form-data; name="articleUrl_name"
@@ -646,11 +892,29 @@ export class ArticleAddComponent {
         Bon.
          */
 
-        const updateToMakeHardCodedIshConfigurable = new Wrarticle(this.addArticleForm.value.articleTitle_formControlName, this.addArticleForm.value.articleUrl_formControlName, 'mycategory2')
-        // We supply a dummy-value for the two not-really-in-use fields
+        /*
+        Mkaing sure of things. (Oy!)
+         */
+        console.log('goUpdateArticle - BEFORE wrArticle etc. - this.photosRenamedFilenamesArray: ', this.photosRenamedFilenamesArray)
+
+        /* NEW 20180623 In "Update", also Add New Photo(s)!
+        Need to incorporate PHOTOS onto this Wrarticle object.
+         */
+        const updateToMakeHardCodedIshConfigurable = new Wrarticle(this.addArticleForm.value.articleTitle_formControlName, this.addArticleForm.value.articleUrl_formControlName, 'mycategory2', this.photosRenamedFilenamesArray)
+/* No. This was not it. This has "FAKEPATH" boolsheet.
+            this.addArticleForm.value.articlePhotos_formControlName)
+*/
+        // We supply a dummy-value for the one not-really-in-use field: "category"
 
         console.log('OOFFAA # 3: updateToMakeHardCodedIshConfigurable ', updateToMakeHardCodedIshConfigurable)
-        /* YES
+        /* Issue. Not There Yet.
+        Got the FAKEPATH << ain't right
+        Need to get that "this.photosRenamedFilenamesArray" instead. Hmm.
+        see revised code above...
+
+         Wrarticle {articleTitle_name: "EDITOLA Trump’s Moves to Fight Back Against Investigators .html", articleUrl_name: "https://www.nytimes.com/2018/05/22/opinion/trump-rosenstein.html", articleCategory_name: "mycategory2", articlePhotos_name: "C:\fakepath\051218krugman1-jumbo.png"}
+         */
+        /* YES << Older
 Wrarticle         {articleTitle_name: "REDITEDeactive Photos ngModel 1", articleUrl_name: "http://nytimes.com/section/business", articleCategory_name: "mycategory2"}
          */
 

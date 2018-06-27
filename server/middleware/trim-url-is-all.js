@@ -63,7 +63,7 @@ middlewareModule.myMiddlewareTrimUrl = function(req, res, next) {
 
         console.log('Holy Crap. This is TRUE! typeof req.body.articleUrl_name === "object" ')
     } else {
-        console.log('what the hay. This is fALSE typeof req.body.articleUrl_name === "object" ')  // << Yep.
+        console.log('Q. Is URL null? A. No. GOOD. ----- what the hay. This is fALSE typeof req.body.articleUrl_name === "object" ')  // << Yep.
     }
 
     // TRUE. It most assuredly *IS* typeof string. harrumph.
@@ -79,7 +79,7 @@ middlewareModule.myMiddlewareTrimUrl = function(req, res, next) {
      https://stackoverflow.com/questions/39927284/object-propertys-null-value-converted-to-null-string
      */
     if (typeof req.body.articleUrl_name === 'string' ) {
-        console.log('Holy Crap. This is TRUE! typeof req.body.articleUrl_name === "string" ') // << Yep.
+        console.log('Q. Is URL a string? A. Yes. GOOD. ----- Holy Crap. This is TRUE! typeof req.body.articleUrl_name === "string" ') // << Yep.
     } else {
         console.log('what the hay. This is fALSE typeof req.body.articleUrl_name === "string" ')
     }

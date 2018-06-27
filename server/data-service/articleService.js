@@ -99,6 +99,28 @@ class articleService {
                 (whatIGot) => {
                     // resolved
                     console.log('articleService whatIGot', whatIGot) // Model object
+
+                    /* OY. 20180623-1107
+                    We are only getting that FAKEPATH nonsense. What is going. on.
+                     _doc
+                     :
+                     articlePhotos
+                     :
+                     ["C:\fakepath\merlin_137026530_5750f3c2-339f-4890-bf80-f2959d79e4e4-master768.jpg", toBSON: ƒ, _atomics: {…}, _parent: model, _cast: ƒ, _markModified: ƒ, …]
+                     articleTitle
+                     :
+                     "Trump HELL Ye Olde Edite 2 v. the Department of Justice"
+                     articleUrl
+                     :
+                     "https://www.nytimes.com/2018/05/21/opinion/trump-investigation-russia-surveillance.html"
+                     __v
+                     :
+                     0
+
+                     */
+
+
+
                     return whatIGot
                 },
                 (problemo) => {
@@ -168,6 +190,11 @@ class articleService {
     /* ********************************* */
     static updateArticle(idToUpdatePassedIn, articleDataToUpdatePassedIn) {
 
+        /* NEW 20180623-1031
+         In Edit/Update, ADD NEW PHOTO(s)...
+         */
+
+
         console.log('SUPER-DUPER-OOFFAA ******** articleDataToUpdatePassedIn ', articleDataToUpdatePassedIn)
         /* UPDATE: I see Title and URL ... Now time to add the Photos Filenames Array. :o)
          {articleTitle_name: "Trump’s WAYZO Gots to go 3345 Twice BAZZARRO  We L…CIENT Fuel Efficiency Rollbacks Will Hurt Drivers", articleUrl_name: "https://www.nytimes.com/2018/05/11/opinion/trump-fuel-efficiency-rollbacks.html"}
@@ -200,12 +227,16 @@ class articleService {
          */
         console.log('******** articleDataToUpdatePassedIn.articleUrl_name ', articleDataToUpdatePassedIn.articleUrl_name)
         console.log('******** articleDataToUpdatePassedIn.articleTitle_name ', articleDataToUpdatePassedIn.articleTitle_name)
+
+        console.log('******** articleDataToUpdatePassedIn.articlePhotos_name ', articleDataToUpdatePassedIn.articlePhotos_name)
+
         return articleModelHereInService.findByIdAndUpdate(
             {_id: idToUpdatePassedIn},
             { $set:
                 {
                    articleTitle: articleDataToUpdatePassedIn.articleTitle_name,
-                    articleUrl: articleDataToUpdatePassedIn.articleUrl_name
+                    articleUrl: articleDataToUpdatePassedIn.articleUrl_name,
+                    articlePhotos: articleDataToUpdatePassedIn.articlePhotos_name,
                  }
             },
             { new: true } // Gets you the NEW, just-edited doc (not the orig one)

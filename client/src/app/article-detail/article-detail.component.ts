@@ -118,6 +118,7 @@ export class ArticleDetailComponent {
 
                 // https://stackoverflow.com/questions/830855/what-regex-would-capture-everything-from-mark-to-the-end-of-a-line
                 console.log('ARTICLE-DETAIL -01- GET-ARTICLE() paramsIGotTitleStubWithArticleIdHereInDetailPage ', paramsIGotTitleStubWithArticleIdHereInDetailPage);
+                // Yes: harley-davidson-us-eu-tariffs--aid--5b3221c945210fb5ff85f572
 
                 /* **********************************
                 REGEX
@@ -141,6 +142,8 @@ export class ArticleDetailComponent {
                     const regexResultsArrayArticleId = paramsIGotTitleStubWithArticleIdHereInDetailPage.match(/--aid--.*$/);
 
                     console.log('ARTICLE-DETAIL -02- GET-ARTICLE() regexResultsArrayArticleId ', regexResultsArrayArticleId);
+                    /* Yes.
+                     ["--aid--5b3221c945210fb5ff85f572", index: 29, input: "harley-davidson-us-eu-tariffs--aid--5b3221c945210fb5ff85f572", groups: undefined]                     */
 
                     this.theArticleIdHereInDetailPage = regexResultsArrayArticleId[0].slice(this.articleIdDelimiter.length) // from '--aid--' to the end will (should?) (does!) yield the MongoDB _id #. H'rrah.
                     // We now have simply (and correctly): E.g. 5af746cea7008520ae732e2c
@@ -159,6 +162,15 @@ export class ArticleDetailComponent {
                             // data...
                             this.theArticleHereInDetailPage = articleIGot;
                             console.log('subscribe : this.theArticleHereInDetailPage ', this.theArticleHereInDetailPage) // Yes: the object {} from MongoDB
+
+                            /* 20180627-0715
+                            EDITING
+                             {articlePhotos: Array(1), _id: "5b3362d7a1284d055d2c4d6c", articleUrl: "https://www.nytimes.com/2018/06/26/nyregion/joseph-crowley-ocasio-cortez-democratic-primary.html", articleTitle: "Alexandria Ocasio-Cortez Defeats Joseph Crowley in Major Democratic House Upset", __v: 0}
+articlePhotos:
+               ["["sometimes__1530093587619_27crowley1-superJumbo.j…__1530093587642_27crowley3NEW-superJumbo-v4.jpg"]"]
+                             */
+
+
                             // Fill in that REACTIVE editable Form, too!
                             this.myArticleEditFormGroup.patchValue({
                                 articleTitle_formControlName: articleIGot.articleTitle
@@ -168,10 +180,43 @@ export class ArticleDetailComponent {
                             Let's transform the Photo File Names:
                       1      - In the database they are JSON.stringify()
                             - Now time to JSON.parse()
+
+
+CREATE = OK                articleIGot  <<<< from the database, kids
+                             articlePhotos: Array (1)
+
+                             "["sometimes__1530093587619_27crowley1-superJumbo.jpg","sometimes__1530093587642_27crowley3NEW-superJumbo-v4.jpg"]"
+                             length: 1
+
+
+                            articleIGot  <<<< from the database, kids
+                              articlePhotos: Array (1)
+                             "["sometimes__1526154956356_11bledsoe-superJumbo.jpg","sometimes__1526154956363_11bledsoe2-superJumbo.jpg"]"
+
+                             As you can see: a String, holding an Array of Strings.
+                             What is funny about it is -- at least as
+                             represented in my Dev Console -- this "String"
+                             appears to "not be bothered" by the fact that
+                             it has nested double-quotes.
+                             But, that "improperly escaped/nested strings" business
+                              does NOT work in good old JavaScript
+                             console:  Hmm.
+                             https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Missing_semicolon_before_statement
+
+
+                             "["sometimes__1526154956356_11bledsoe-superJumbo.jpg","sometimes__1526154956363_11bledsoe2-superJumbo.jpg"]"
+
+
                              */
                             this.theArticlePhotosArrayHereInDetailPage = JSON.parse(articleIGot.articlePhotos)
-                            console.log('this.theArticlePhotosArrayHereInDetailPage ', this.theArticlePhotosArrayHereInDetailPage);
-                            /*
+                            console.log('AFTER JSON.PARSE this.theArticlePhotosArrayHereInDetailPage ', this.theArticlePhotosArrayHereInDetailPage);
+                            /* ? No. William. Go instead to article-add-component.ts
+                             No longer here in article-detail-component.ts
+                             Sheesh
+
+                            Yes. EDITING. 20180627-0718
+                             ["sometimes__1530093587619_27crowley1-superJumbo.jpg", "sometimes__1530093587642_27crowley3NEW-superJumbo-v4.jpg"]
+
                             Yes
                              ["sometimes__1525988911510_010006-MexAmerican.jpg", "sometimes__1525988911513_AndToThinkWeAllPlayedASma…t-NewYorkerCartoon-SlackScreenshot-2017-11-14.jpg"]
                              */
@@ -391,7 +436,12 @@ So, THIS METHOD is NOT BEING CALLED. Cheers.
          }
          */
 
-        const updateToMakeHardCodedIshConfigurable = new Wrarticle(formGroupPassedIn.value.articleTitle_formControlName, 'myhttp', 'mycategory')
+/* WRONG
+        var myDummyPhotosArrayOfStrings = ['myphoto1', 'myphoto2']
+        const updateToMakeHardCodedIshConfigurable = new Wrarticle(formGroupPassedIn.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings)
+*/
+        var myDummyPhotosArrayOfStrings = 'justsomestringaaa'
+        const updateToMakeHardCodedIshConfigurable = new Wrarticle(formGroupPassedIn.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings)
         // We supply a dummy-value for the two not-really-in-use fields
 
         this._myArticleService.updateArticle(
@@ -468,7 +518,20 @@ E.g.,
         console.log('REACTIVE NO PARAM - EDIT FORM. About to use service. this.theArticleIdHereInDetailPage is ', this.theArticleIdHereInDetailPage) // Yes. Correct ID.
         // this.theArticleIdHereInDetailPage is  5b003629480659e4aaf1449a
 
-        const updateToMakeHardCodedIshConfigurable = new Wrarticle(this.myArticleEditFormGroup.value.articleTitle_formControlName, 'myhttp', 'mycategory')
+
+/* WRONG
+        var myDummyPhotosArrayOfStrings2 = ['myphoto12', 'myphoto22']
+        const updateToMakeHardCodedIshConfigurable = new Wrarticle(this.myArticleEditFormGroup.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings2)
+*/
+        /*
+        WRONG
+         ERROR in src/app/article-detail/article-detail.component.ts(395,146): error TS2345: Argument of type 'string[]' is not assignable to parameter of type '[string]'.
+         */
+
+        var myDummyPhotosArrayOfStrings3 = 'justsomestring';
+        const updateToMakeHardCodedIshConfigurable = new Wrarticle(this.myArticleEditFormGroup.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings3)
+
+
         // We supply a dummy-value for the two not-really-in-use fields
 
         this._myArticleService.updateArticle(

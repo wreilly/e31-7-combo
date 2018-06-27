@@ -86,7 +86,7 @@ apiArticleController.apiGetFirstNArticles = function(req, res, next) {
             (whatIGot) => {
                 // resolved
                 console.log('First N - First N ? whatIGot ', whatIGot)
-                res.send(whatIGot) // "first n articles ..."
+                res.send(whatIGot) // "first n articles ..."  Note: 0 does get, well, 0. (It isn't some magic, "oh I say zero, but really I want you to get ALL of them." No. Not in my experience. Cheers.)
             },
             (problemo) => {
                 // rejected
@@ -143,7 +143,7 @@ apiArticleController.apiGetAllArticles = function (req, res, next) {
                 // So it does work to just send the JavaScript Object (whatIGot)
                 // res.send(whatIGot)
                 // Let's just look at one of them... [0]
-                console.log('1. Controller whatIGot[0] (from data service) ', whatIGot[0])
+                console.log('1. Controller - getAllArticles - whatIGot[0] (from data service) ', whatIGot[0])
                 /*
                 A JavaScript OBJECT:
                  whatIGot
@@ -364,6 +364,11 @@ apiArticleController.apiUpdateArticle = function(req, res, next) {
      */
     articleDataToUpdate.articleTitle_name = req.body.articleTitle_name
     articleDataToUpdate.articleUrl_name = req.body.articleUrl_name
+
+    /* NEW 20180623-1029
+    In Edit/Update, ADD NEW PHOTO(s)...
+     */
+    articleDataToUpdate.articlePhotos_name = req.body.articlePhotos_name
 
     return articleDataServiceHereInApiController.updateArticle(idForUpdate, articleDataToUpdate)
         .then((whatIGot) => {

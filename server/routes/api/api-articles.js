@@ -194,6 +194,7 @@ function myDestinationFunction(req, file, callback) {
 
 
 function myFilenameFunction(req, file, callback) {
+    console.log('How\'m I doin\'? MULTER FING myFilenameFunction file.originalname: ', file.originalname)
     callback(null, 'sometimes__' + Date.now() + '_' + file.originalname)
 }
 
@@ -307,7 +308,7 @@ apiArticlesRouter.post(
 
         console.log('REST API ROUTER POST /articleimages req.files ', req.files);
         /*
-        IT WORKED.
+        IT WORKED. << Yes. still true 20180625-0634
 
          REST API ROUTER POST /articleimages req.files
          [{…}]
@@ -345,7 +346,7 @@ AND, LOOKEE HERE:
 A PICTURE! How nice.
          */
 
-        console.log('REST API ROUTER POST /articleimages req.body ', req.body) // empty {}
+        console.log('REST API ROUTER POST /articleimages req.body ', req.body) // empty {} = GOOD, Expected
         apiArticleControllerHereInApi.apiUploadedArticleImagesNowDoNothing(req, res, next)
     }
 )

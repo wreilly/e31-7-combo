@@ -20,14 +20,34 @@ export class Wrarticle {
         articleUrl_name: string; // not really using...
         articleCategory_name: string; // not really using...
 
+    /* NEW 20180623-1020
+    In Update/Edit mode, ADD ANOTHER PHOTO(S) :o)
+     */
+ //   articlePhotos_name: [string]; // hmm, is this an Array (of Strings?)?
+    /*
+    See crapola problems in article-detail.component.ts ca. 371, 476 etc. Oy
+    Just go with any
+     */
+   articlePhotos_name: any; // should I cop out and just throw down catch-all 'any' ?
+    /*
+    Yes, appears to be:
+     ------WebKitFormBoundaryCYIbVB69jzqJ0Hyx
+     Content-Disposition: form-data; name="articlePhotos_name"
 
-        constructor(title: string, url: string, category: string) {
+     ["sometimes__1527074436227_13alexander-articleLarge.jpg","sometimes__1529763470672_31catholics-web3-jumbo.jpg"]
+     ------WebKitFormBoundaryCYIbVB69jzqJ0Hyx--
+     */
+
+        constructor(title: string, url: string, category: string, photosArray: any) {
             this.articleTitle_name = title;
             this.articleUrl_name = url;
             this.articleCategory_name = category;
+            this.articlePhotos_name = photosArray;
 
             console.log('heck we just constructed a wrarticle')
             console.log('this.articleTitle_name ', this.articleTitle_name)
             console.log('this.articleUrl_name ', this.articleUrl_name)
+            console.log('this.articlePhotos_name ', this.articlePhotos_name)
+            console.log('this.articleCategory_name << Not Using >> ', this.articleCategory_name)
         }
 }

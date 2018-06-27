@@ -213,9 +213,9 @@ WRONG:
      */
     if (numberArticlesPassedIn === "" || numberArticlesPassedIn < 0) {
             console.log('Invalid number of articles requested.'); // TODO Flash msg or similar
-            console.log('getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn);
+            console.log('Invalid - getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn);
             } else {
-            console.log('getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn)
+            console.log('Valid - getThisManyArticles: numberArticlesPassedIn ', numberArticlesPassedIn)
 /*
             this._myArticleService.listFirstNArticles(numberArticlesPassedIn.value)
 */

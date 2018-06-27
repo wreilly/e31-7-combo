@@ -117,7 +117,31 @@ export class ArticleService {
   }
 
   updateArticle(idPassedIn, editedArticle) {
+
+    // NEW 20180623 In Edit/Update mode, add another Photo(s)!
+
     console.log('OOFFAA. More console.log debuggggging editedArticle is: ', editedArticle);
+    /* 20180625 0725
+
+    Hmm.  this only has the NEW photo(s), and in that "fakepath" way. Hmm.:
+     Wrarticle {articleTitle_name: "EDITOLA Trump’s Moves to Fight Back Against Investigators .html", articleUrl_name: "https://www.nytimes.com/2018/05/22/opinion/trump-rosenstein.html", articleCategory_name: "mycategory2", articlePhotos_name: "C:\fakepath\051218krugman1-jumbo.png"}
+
+    POST /REACTIVE-FORM ....  OK does have the Array of Strings of Photo Filename(s) concatenated = Good.
+     ------WebKitFormBoundaryZBQJ1XvwJek6pAhX
+     Content-Disposition: form-data; name="articleUrl_name"
+
+     https://www.nytimes.com/2018/05/22/opinion/trump-rosenstein.html
+     ------WebKitFormBoundaryZBQJ1XvwJek6pAhX
+     Content-Disposition: form-data; name="articleTitle_name"
+
+     EDITOLA Trump’s Moves to Fight Back Against Investigators .html
+     ------WebKitFormBoundaryZBQJ1XvwJek6pAhX
+     Content-Disposition: form-data; name="articlePhotos_name"
+
+     ["sometimes__1527074634847_13alexander-articleLarge.jpg","sometimes__1529925765334_051218krugman1-jumbo.png"]
+     ------WebKitFormBoundaryZBQJ1XvwJek6pAhX--
+
+     */
     // Yes. articleUrl_name: "https://www.nytimes.com/2018/06/15/sports/spain-po…up.html?action=click&module=Ribbon&pgtype=Article"
     /* Wrarticle: editedArticle:
      {articleTitle_name: "Mueller EDIT Plans to Wrap Up Obstruction Inquiry Into Trump by Sept. 1, Giuliani Says", articleUrl_name: "https://nytimes.com/2018/05/20/us/politics/mueller-trump-obstruction-september-giuliani.html", articleCategory_name: "mycategory2"}
