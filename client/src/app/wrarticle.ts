@@ -45,9 +45,9 @@ export class Wrarticle {
             this.articlePhotos_name = photosArray;
 
             console.log('heck we just constructed a wrarticle')
-            console.log('this.articleTitle_name ', this.articleTitle_name)
-            console.log('this.articleUrl_name ', this.articleUrl_name)
-            console.log('this.articlePhotos_name ', this.articlePhotos_name)
-            console.log('this.articleCategory_name << Not Using >> ', this.articleCategory_name)
+            console.log('WRARTICLE this.articleTitle_name ', this.articleTitle_name)
+            console.log('WRARTICLE this.articleUrl_name ', this.articleUrl_name)
+            console.log('WRARTICLE this.articlePhotos_name ', this.articlePhotos_name)
+            console.log('WRARTICLE this.articleCategory_name << Not Using >> ', this.articleCategory_name)
         }
 }

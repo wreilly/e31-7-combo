@@ -404,6 +404,11 @@ apiArticlesRouter.post(
 /* ************************************************** */
 apiArticlesRouter.put(
     '/:idToEditHere',
+
+    myPhotosUploadMulter.array(), // Q. Works fine? A. NO.
+
+
+
     /* As in POST / above ... also here at PUT/:id
      We here use a Middleware, to simply trim the NYTimes URL
      */

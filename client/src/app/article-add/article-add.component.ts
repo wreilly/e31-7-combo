@@ -688,7 +688,8 @@ export class ArticleAddComponent {
          JSON.stringify(this.photosRenamedFilenamesArray)
          */
         var whatTheHay = JSON.stringify(this.photosRenamedFilenamesArray);
-        console.log('whatTheHay JSON.stringify(this.photosRenamedFilenamesArray) ', whatTheHay)
+        console.log('WHATTHEHAY PREPARETOADDARTICLE whatTheHay JSON.stringify(this.photosRenamedFilenamesArray) ', whatTheHay)
+        console.log('Am I this.Editing? Or this.What? this.editing: ', this.editing);
 
         this.myFormFieldsData.append('articlePhotos_name', JSON.stringify(this.photosRenamedFilenamesArray)) // SAME as on Template Form (fwiw)
 

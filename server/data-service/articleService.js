@@ -230,13 +230,80 @@ class articleService {
 
         console.log('******** articleDataToUpdatePassedIn.articlePhotos_name ', articleDataToUpdatePassedIn.articlePhotos_name)
 
+        /* 20180628-0740
+        Boys and girls, we are going to try to NIP this bad boy,
+        right here in the B-U-D. Whoa.
+
+        O.M.G. It Worked.
+        Goodness Griefiness.
+        wswhooohhhhwwhh (sound, breath, exhalation, all that)
+
+IN SUM - YAH, WE DID NEED TO DO ANOTHER JSON.stringify()
+OF THAT CRAZY SIMPLE ARRAY OF STRINGS
+BEFORE SENDING IT TO MONGOOSE / MONGO
+FOR WHATEVER THE HELL IT IS THEy DO
+IN TERMS OF STORING THIS AWAY.
+YEESH.
+And as a further comment: when you JSON.stringify()
+this sort of thing, and then you debug either using
+console.log(), OR using debugging in Chrome DevTools,
+you do ***NOT*** get to "see" what it looks like.
+You always see:
+[ "asdf", "qwer" ]
+You do NOT get to see (what actually lands in the database):
+[ '["asdf", "qwer"] ' ]
+NOR (same thing):
+[ "[\"asdf\", \"qwer\"]" ]
+
+JESUS H. CHRIST.
+
+        Relevant console explorations:
+        In sum: yeah, parsing then stringifying then parsing again ...
+        ... it WORKS. Lessee if it'll do that Magic for ME
+        ============
+         var p5 = " [ \"asdf\", \"qwer\" ] "
+         undefined
+         var p6 = JSON.parse(p5)
+         undefined
+         p6
+         Array [ "asdf", "qwer" ]
+         ...
+         p6
+         Array [ "asdf", "qwer" ]
+         p13 = JSON.parse(p6)
+         SyntaxError: JSON.parse: unexpected character at line 1 column 1 of the JSON data[Learn More] debugger eval code:1:7
+         p14 = JSON.stringify(p6)  <<<<< THE MAGIC PART
+         "[\"asdf\",\"qwer\"]"
+         p14
+         "[\"asdf\",\"qwer\"]"
+         var p15 = JSON.parse(p14)
+         undefined
+         p15
+         Array [ "asdf", "qwer" ]
+         ============
+         */
+
+        var theLateGreatWhatTheHell = JSON.stringify(articleDataToUpdatePassedIn.articlePhotos_name); // << YES !!!
+        console.log('******** theLateGreatWhatTheHell (JSON.stringify(articleDataToUpdatePassedIn.articlePhotos_name) ', theLateGreatWhatTheHell);
+/*
+Note that the "console.log()" nonsense does ***NOT*** show us what this thing
+***TRULY*** is.   :o(
+* ******** theLateGreatWhatTheHell (JSON.stringify(articleDataToUpdatePassedIn.articlePhotos_name)  ["sometimes__1530187445867_27vid-trump-kennedy-1-thumbLarge.jpg","sometimes__1530187445870_28midterm_xp-superJumbo.jpg","sometimes__1530188021581_00republicans1-jumbo-v3.jpg"]
+*
+*
+* WHAT IS IN THE (G.D.) DATABASE (which is correct and right and good):
+* "articlePhotos" : [ "[\"sometimes__1530187445867_27vid-trump-kennedy-1-thumbLarge.jpg\",\"sometimes__1530187445870_28midterm_xp-superJumbo.jpg\",\"sometimes__1530188021581_00republicans1-jumbo-v3.jpg\"]" ],
+ */
+
+
         return articleModelHereInService.findByIdAndUpdate(
             {_id: idToUpdatePassedIn},
             { $set:
                 {
                    articleTitle: articleDataToUpdatePassedIn.articleTitle_name,
                     articleUrl: articleDataToUpdatePassedIn.articleUrl_name,
-                    articlePhotos: articleDataToUpdatePassedIn.articlePhotos_name,
+                    // articlePhotos: articleDataToUpdatePassedIn.articlePhotos_name,  // << NO !!
+                    articlePhotos: theLateGreatWhatTheHell, // << YES!!!
                  }
             },
             { new: true } // Gets you the NEW, just-edited doc (not the orig one)
