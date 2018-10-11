@@ -23,6 +23,12 @@ import { ArticleDisplayNComponent } from './article-display-n/article-display-n.
  { path: 'articles/:article_id', component: ArticleDetailComponent }
  ];
  */
+/* ANOTHER EXAMPLE of re-factoring ROUTES:
+ ROUTER PATH STUFF
+
+ Good Example from Udemy Angular Course:
+ /Users/william.reilly/dev/Angular/Udemy-Angular5-MaxS/06ComponentsRecipesProject/prj-WR__RECIPES-basics-final/src/app/app-routing.module.ts
+ */
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'articles/add', component: ArticleAddComponent },
