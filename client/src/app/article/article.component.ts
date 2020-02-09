@@ -102,14 +102,15 @@ THEN I CHANGED TO: https://www.nytimes.com/2018/05/21/opinion/trump-investigatio
       // Above returns string I seek *twice*. (Array of two (identical) strings). Owing to the Capture Group. Hmm.
       // https://stackoverflow.com/questions/9002771/match-returns-array-with-two-matches-when-i-expect-one-match
 
-      this.articleUrlTitleStubArray = this.articleHere.articleUrl.match(/\/(?:(?!\/).)+?(?=\.html)/); // , '$1');
-      // This one works right: Once. Array of one string. Interesting. I removed the outermost () Capture Group biz.
+          this.articleUrlTitleStubArray = this.articleHere.articleUrl.match(/\/(?:(?!\/).)+?(?=\.html)/); // , '$1');
+          // This one works right: Once. Array of one string. Interesting. I removed the outermost () Capture Group biz.
 
-   /*
-    https://www.nytimes.com/2018/05/21/opinion/trump-investigation-russia-surveillance.html   <<< BEFORE REGEX
-    /trump-investigation-russia-surveillance   <<< AFTER REGEX
-    trump-investigation-russia-surveillance    <<< AFTER slice(1)
-    */
+       /*
+        https://www.nytimes.com/2018/05/21/opinion/trump-investigation-russia-surveillance.html   <<< BEFORE REGEX
+        /trump-investigation-russia-surveillance   <<< AFTER REGEX
+        trump-investigation-russia-surveillance    <<< AFTER slice(1)
+        */
+       // O la. Good. https://www.stefanjudis.com/today-i-learned/the-complicated-syntax-of-lookaheads-in-javascript-regular-expressions/
 
 // FAILS    console.log('******* articleUrlTitleStubArray[0] ', articleUrlTitleStubArray[0]);
 
