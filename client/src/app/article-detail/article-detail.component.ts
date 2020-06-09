@@ -440,7 +440,8 @@ So, THIS METHOD is NOT BEING CALLED. Cheers.
         var myDummyPhotosArrayOfStrings = ['myphoto1', 'myphoto2']
         const updateToMakeHardCodedIshConfigurable = new Wrarticle(formGroupPassedIn.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings)
 */
-        var myDummyPhotosArrayOfStrings = 'justsomestringaaa'
+// HELLO FROM 2020 (!) (put an ARRAY around it, ferchrissakes)
+        var myDummyPhotosArrayOfStrings = ['justsomestringaaa'];
         const updateToMakeHardCodedIshConfigurable = new Wrarticle(formGroupPassedIn.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings)
         // We supply a dummy-value for the two not-really-in-use fields
 
@@ -528,7 +529,45 @@ E.g.,
          ERROR in src/app/article-detail/article-detail.component.ts(395,146): error TS2345: Argument of type 'string[]' is not assignable to parameter of type '[string]'.
          */
 
+/* *********************************** */
+        /* HMM, & OH, DEAR:
+        Today: 09/Feb/2020
+        I find, I believe, that the EDIT is BROKEN
+        on this fine little app. (sigh).
+        I do not know why my "update" method here has this
+        rather LAME "dummy" values for 1) URL, 2) Category, and
+        3) Array of Photo Filename Strings.
+        Sigh.
+        To EDIT right now is to BREAK the entry record.
+        The Array of photo strings gets "justsomestring" stuffed
+        into it = BAD.
+
+        More odd stuff.
+        Read comments herein about how I had to (two years ago!)
+        deal with this array of a string holding an array of strings.  Then I (guess I) JSON.parse it, to get it down to
+        an array of strings (I think). & Etc.
+        O la!
+         ["["sometimes__1530093587619_27crowley1-superJumbo.j…__1530093587642_27crowley3NEW-superJumbo-v4.jpg"]"]
+
+        We'll see whether I (ever) come back and FIX.
+        t.b.d. TODO mebbe justsomestring in myDummyPhotos etc.
+         */
+/* NO (2018) << Hmm
         var myDummyPhotosArrayOfStrings3 = 'justsomestring';
+*/
+// J'ESPERE (2020) <<
+        var myDummyPhotosArrayOfStrings3 = ['justsomestring-in-an-array'];
+/* HELLO FROM 2020 (!)
+Error caused by above line:
+"ArticleDetailComponent.html:9 ERROR Error: Cannot find a differ supporting object 'justsomestring' of type 'string'. NgFor only supports binding to Iterables such as Arrays.
+    at NgForOf.ngOnChanges"
+
+    FIX: (J'espere)
+    Make it the right type: ["asdf"] ARRAY of string(s).
+ */
+/* *********************************** */
+
+
         const updateToMakeHardCodedIshConfigurable = new Wrarticle(this.myArticleEditFormGroup.value.articleTitle_formControlName, 'myhttp', 'mycategory', myDummyPhotosArrayOfStrings3)
 
 
