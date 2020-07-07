@@ -417,8 +417,51 @@ articleService.saveArticle = function(articleToSave) {
         .then(
             (articleJustSaved) => {
                 // fulfilled/resolved
-                console.log('articleJustSaved: ', articleJustSaved)
+                // console.log('articleJustSaved: ', articleJustSaved)
+                // console.log('articleJustSaved: _DOC ', JSON.parse(JSON.stringify(articleJustSaved))._doc); // Boo-hiss. undefined
+                console.log('articleJustSaved: _ID ', JSON.parse(JSON.stringify(articleJustSaved))._id); // Yes: 5f045f616d2fd54b6630ec67
+                console.log('articleJustSaved: TITLE ', JSON.parse(JSON.stringify(articleJustSaved)).articleTitle); // Yes: tooquickly
+                console.log('SERVICE: articleJustSaved: JSON-JSON ', JSON.parse(JSON.stringify(articleJustSaved)));
+                /*
+                {articlePhotos: Array(0),
+                _id: "5f045c15f9b0bc449c3a6a69",
+                articleUrl: "https://reilly2001.info",
+                articleTitle: "tooquickly", __v: 0}
+                 */
+
+                /* One More Thing To Try = YES :)
+                .toObject()
+                https://github.com/Automattic/mongoose/issues/1723#issuecomment-26214361
+                 */
+                const myPseudoLeanObject = articleJustSaved.toObject();
+                console.log('01 ', myPseudoLeanObject);
+                /*
+                01  {
+  articlePhotos: [],
+  _id: ObjectID {
+    _bsontype: 'ObjectID',
+    id: <Buffer 5f 04 5f 61 6d 2f d5 4b 66 30 ec 67>
+  },
+  articleUrl: 'http://nytimes.com/oboyasdf',
+  articleTitle: 'pseudofakey',
+  __v: 0
+}
+                 */
+
+                console.log('02 ', JSON.parse(JSON.stringify(myPseudoLeanObject)));
+                /*
+                02  {
+  articlePhotos: [],
+  _id: '5f045f616d2fd54b6630ec67',
+  articleUrl: 'http://nytimes.com/oboyasdf',
+  articleTitle: 'pseudofakey',
+  __v: 0
+}
+                 */
+
+
                 return articleJustSaved
+                // return myPseudoLeanObject // << Yeah worked okay too
             },
             (problemo) => {
                 // rejected

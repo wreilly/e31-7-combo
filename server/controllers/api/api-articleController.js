@@ -295,7 +295,8 @@ apiArticleController.apiCreateArticle = function(req, res, next) {
     articleDataServiceHereInApiController.saveArticle(articleToSave)
         .then(
             (whatIGot) => {
-                console.log('Article Saved! ', whatIGot)
+                // console.log('Article Saved! ', whatIGot)
+                console.log('CONTROLLER: Article Saved!: JSON-JSON ', JSON.parse(JSON.stringify(whatIGot)));
                 /* Back from MongoDB
                  Notes on the "articlePhotos" property:
                  We used JSON.stringify() to store the Array of Strings with renamed photo filename(s).
