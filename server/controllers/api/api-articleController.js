@@ -143,7 +143,12 @@ apiArticleController.apiGetAllArticles = function (req, res, next) {
                 // So it does work to just send the JavaScript Object (whatIGot)
                 // res.send(whatIGot)
                 // Let's just look at one of them... [0]
+/* Let's STOP logging this monster.
+(It is the whole MODEL. Too much.
+
                 console.log('1. Controller - getAllArticles - whatIGot[0] (from data service) ', whatIGot[0])
+*/
+                console.log('1.A. Controller - getAllArticles - whatIGot[0].articleTitle (from data service) ', whatIGot[0].articleTitle);
                 /*
                 A JavaScript OBJECT:
                  whatIGot
