@@ -85,9 +85,30 @@ var articleSchema = new mongoose.Schema({
     For that reason the stored data must be processed by JSON.parse() by any consumer of it.
      */
 
-    articlePhotos: [String]
+    articlePhotos: [String],
 
-})
+}); // /articleSchema
+
+/* ABANDONING ***************************************
+Crazy. 2020-07-14
+https://stackoverflow.com/questions/13350642/how-to-get-creation-date-from-object-id-in-mongoose
+https://mongoosejs.com/docs/api.html#virtualtype_VirtualType-get
+ */
+/*  ABANDONING **************************************
+let myCreatedVirtual = articleSchema.virtual('myCreated');
+// fwiw, Above is of "type" mongoose.VirtualType
+console.log('myCreatedVirtual instanceof mongoose.VirtualType ', myCreatedVirtual instanceof mongoose.VirtualType); // << Mai Visto. bah. -- true one hopes?
+
+myCreatedVirtual.get(
+    function() {
+        console.log('Model. Virtual. this: ', this);
+        console.log('Model. Virtual. this._id: ', this._id);
+        if ( this['myCreated']) return this['myCreated'];
+        return this['myCreated'] = this._id.getTimestamp();
+    }
+)
+ **  /ABANDONING  **********************************
+*/
 
 function wr__isMyFieldRequired() { return true } // << For me, ALWAYS required, be that null (which Mongoose was not catching/enforcing), or "". Will also catch undefined, were our app to somehow come up with that ( ? ). H'okay.
 

@@ -76,7 +76,7 @@ It's the WHOLE MODEL (Too Much).
                         console.log('articleService runModelPromises resolved whatIGot[0]', whatIGot[0])
 */
                         console.log('articleService runModelPromises resolved whatIGot[0].articleTitle', whatIGot[0].articleTitle);
-                        
+
                         return whatIGot
                     },
                     (problemo) => {
