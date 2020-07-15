@@ -34,6 +34,9 @@ apiArticlesRouter.use((req, res, next) => {
  * NEW: 2018-04-20
  * apiArticlesRouter.get('/first-n?howMany_query', ...)
  *
+ * NEW: 2020-07-15
+ * - GET '/' ==> '/api/v1/articles/recent' // 1, for now. NEW.
+ *
  * apiArticlesRouter.get('/:idHere', ...) << f.y.i.: Works, but, NOT USED by the WEB APP's "API TEST HARNESS", fwiw.
  *
  * apiArticlesRouter.get('/', ...)
@@ -114,6 +117,23 @@ apiArticlesRouter.get('/first-n', function(req, res, next) {
     apiArticleControllerHereInApi.apiGetFirstNArticles(req, res, next)
 })
 
+
+
+/* ************************************************** */
+/* ******** GET '/api/v1/articles/recent' ************ */
+/* ************************************************** */
+apiArticlesRouter.get('/recent',
+    function (req, res, next) {
+        console.log('API Router 2018 - getArticleMostRecent');
+
+        apiArticleControllerHereInApi.apiGetArticleMostRecent(req, res, next);
+        /* N.B.
+        - With Express server coding, we
+        simply pass the usual:
+          req, res, next
+         */
+    }
+) // /GET '/recent'  1, for now.
 
 
 /* ************************************************** */
